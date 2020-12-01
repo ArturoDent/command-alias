@@ -1,0 +1,161 @@
+{
+ "name": "command-alias",
+ "displayName": "Command Alias",
+ "description": "Create aliases for built-in commands",
+ "version": "0.0.1",
+ "publisher": "ArturoDent",
+ "engines": {
+  "vscode": "^1.51.0"
+ },
+ "preview": true,
+ "repository": {
+  "type": "git",
+  "url": "https://github.com/ArturoDent/folder-operations"
+ },
+ "keywords": [],
+ "license": "MIT",
+ "categories": [
+  "Other"
+ ],
+ "activationEvents": [
+  "onStartupFinished",
+  "onCommand:command-alias.createAliases",
+  "onCommand:command-alias.editor.action.copyLinesDownAction.1",
+  "onCommand:command-alias.editor.action.copyLinesDownAction.2",
+  "onCommand:command-alias.editor.action.copyLinesDownAction.3",
+  "onCommand:command-alias.editor.action.copyLinesDownAction.4",
+  "onCommand:command-alias.editor.action.copyLinesDownAction.5",
+  "onCommand:command-alias.editor.action.copyLinesDownAction.6",
+  "onCommand:command-alias.editor.action.copyLinesDownAction.7",
+  "onCommand:command-alias.editor.action.copyLinesDownAction.8",
+  "onCommand:command-alias.editor.action.copyLinesDownAction.9",
+  "onCommand:command-alias.editor.action.copyLinesDownAction.10",
+  "onCommand:command-alias.editor.action.copyLinesDownAction.11",
+  "onCommand:command-alias.editor.action.copyLinesDownAction.12",
+  "onCommand:command-alias.editor.action.clipboardPasteAction.1",
+  "onCommand:command-alias.editor.action.clipboardPasteAction.2",
+  "onCommand:command-alias.editor.action.clipboardPasteAction.3",
+  "onCommand:command-alias.editor.action.clipboardPasteAction.4",
+  "onCommand:command-alias.editor.action.clipboardPasteAction.5",
+  "onCommand:command-alias.editor.action.clipboardCutAction.1"
+ ],
+ "main": "./src/extension.js",
+ "contributes": {
+  "commands": [
+   {
+    "command": "command-alias.createAliases",
+    "title": "Command Alias: Create aliases from vscode's built-in commands"
+   },
+   {
+    "command": "command-alias.editor.action.copyLinesDownAction.1",
+    "title": "Shimmy"
+   },
+   {
+    "command": "command-alias.editor.action.copyLinesDownAction.2",
+    "title": "slide"
+   },
+   {
+    "command": "command-alias.editor.action.copyLinesDownAction.3",
+    "title": "yump"
+   },
+   {
+    "command": "command-alias.editor.action.copyLinesDownAction.4",
+    "title": "yump2"
+   },
+   {
+    "command": "command-alias.editor.action.copyLinesDownAction.5",
+    "title": "yump3"
+   },
+   {
+    "command": "command-alias.editor.action.copyLinesDownAction.6",
+    "title": "yump4"
+   },
+   {
+    "command": "command-alias.editor.action.copyLinesDownAction.7",
+    "title": "yump5"
+   },
+   {
+    "command": "command-alias.editor.action.copyLinesDownAction.8",
+    "title": "yump6"
+   },
+   {
+    "command": "command-alias.editor.action.copyLinesDownAction.9",
+    "title": "yump7"
+   },
+   {
+    "command": "command-alias.editor.action.copyLinesDownAction.10",
+    "title": "yump8"
+   },
+   {
+    "command": "command-alias.editor.action.copyLinesDownAction.11",
+    "title": "yump9"
+   },
+   {
+    "command": "command-alias.editor.action.copyLinesDownAction.12",
+    "title": "yump10"
+   },
+   {
+    "command": "command-alias.editor.action.clipboardPasteAction.1",
+    "title": "glue3"
+   },
+   {
+    "command": "command-alias.editor.action.clipboardPasteAction.2",
+    "title": "glue4"
+   },
+   {
+    "command": "command-alias.editor.action.clipboardPasteAction.3",
+    "title": "glue5"
+   },
+   {
+    "command": "command-alias.editor.action.clipboardPasteAction.4",
+    "title": "glue6"
+   },
+   {
+    "command": "command-alias.editor.action.clipboardPasteAction.5",
+    "title": "glue1"
+   },
+   {
+    "command": "command-alias.editor.action.clipboardCutAction.1",
+    "title": "non-glue"
+   }
+  ],
+  "configuration": {
+   "type": "object",
+   "title": "Set of command aliases",
+   "properties": {
+    "command aliases": {}
+   }
+  }
+ },
+ "scripts": {
+  "lint": "eslint .",
+  "pretest": "npm run lint",
+  "test": "node ./test/runTest.js"
+ },
+ "devDependencies": {
+  "@types/vscode": "^1.51.0",
+  "@types/glob": "^7.1.1",
+  "@types/mocha": "^7.0.2",
+  "@types/node": "^13.11.0",
+  "eslint": "^6.8.0",
+  "glob": "^7.1.6",
+  "mocha": "^7.1.2",
+  "typescript": "^3.8.3",
+  "vscode-test": "^1.3.0"
+ },
+ "isUserBuiltin": false,
+ "isBuiltin": false,
+ "isUnderDevelopment": true,
+ "id": "ArturoDent.command-alias",
+ "identifier": {
+  "value": "ArturoDent.command-alias",
+  "_lower": "arturodent.command-alias"
+ },
+ "extensionLocation": {
+  "$mid": 1,
+  "fsPath": "c:\\Users\\Mark\\command-alias",
+  "_sep": 1,
+  "path": "/c:/Users/Mark/command-alias",
+  "scheme": "file"
+ }
+}
