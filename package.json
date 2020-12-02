@@ -2,7 +2,7 @@
  "name": "command-alias",
  "displayName": "Command Alias",
  "description": "Create aliases for built-in commands",
- "version": "0.0.1",
+ "version": "0.1.1",
  "publisher": "ArturoDent",
  "engines": {
   "vscode": "^1.51.0"
@@ -10,7 +10,7 @@
  "preview": true,
  "repository": {
   "type": "git",
-  "url": "https://github.com/ArturoDent/folder-operations"
+  "url": "https://github.com/ArturoDent/command-alias"
  },
  "keywords": [],
  "license": "MIT",
@@ -20,8 +20,9 @@
  "activationEvents": [
   "onStartupFinished",
   "onCommand:command-alias.createAliases",
-  "onCommand:command-alias.addRootFolder.1",
-  "onCommand:command-alias.explorer.newFolder.1"
+  "onCommand:command-alias.explorer.newFile.1",
+  "onCommand:command-alias.explorer.newFolder.1",
+  "onCommand:command-alias.launches.showAllLaunchConfigs.1"
  ],
  "main": "./src/extension.js",
  "contributes": {
@@ -31,12 +32,16 @@
     "title": "Command Alias: Create aliases from vscode's built-in commands"
    },
    {
-    "command": "command-alias.addRootFolder.1",
-    "title": "mkdir"
+    "command": "command-alias.explorer.newFile.1",
+    "title": "touch"
    },
    {
     "command": "command-alias.explorer.newFolder.1",
     "title": "mkdir"
+   },
+   {
+    "command": "command-alias.launches.showAllLaunchConfigs.1",
+    "title": "QP configs"
    }
   ],
   "configuration": {

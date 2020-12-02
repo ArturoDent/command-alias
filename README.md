@@ -12,7 +12,7 @@ When you make a change to these settings, you will need to (and will be prompted
 
 <!-- ![Reload notification message](images/reloadNotification.jpg) -->
 
-<img src="https://github.com/ArturoDent/command-alias/blob/master/images/reloadNotification.jpg?raw=true" width="325" height="150" alt="Keybindings shortcuts demo"/>
+<img src="https://github.com/ArturoDent/command-alias/blob/master/images/reloadNotification.jpg?raw=true" width="725" height="300" alt="Keybindings shortcuts demo"/>
 
 <br/><br/>
 
@@ -24,13 +24,15 @@ This extension contributes the following settings:
 
 ```jsonc
   "command aliases": {
-    // multiple aliases for the same command
-    "editor.action.copyLinesDownAction": ["Shimmy", "slide", "copyDown"],
-    "explorer.newFolder": "mkdir",        // single alias doesn't need to be in an array but can be
-    "editor.action.clipboardCutAction": "delete to clipboard"
-
+                                                      
+    "explorer.newFile": "touch",
+    "explorer.newFolder": ["mkdir", "new directory"],  // multiple aliases : use an array
+    "launches.showAllLaunchConfigs": "QP configs",     // an extension command
+    "workbench.action.reloadWindow": "restart"
   }
   ```
+The commands are the same as those you could copy from `Keyboard Shortcuts`.  Use `Copy Command ID` from each command's context menu to get the actual command.
+
 Commands are then generated from these settings either on load of the extension or when you make any change to its setting.  This extension's package.json is updated to contribute these commands and activationEvents.
 
 -----------
@@ -46,16 +48,19 @@ If you had this in your settings:
   }
   ```
 
-  you would see in this in your command palette upon typing `mkdir`:
+  you would see in this in your command palette upon typing `mkdir`:  
+
+  <br/>
 
   <!-- ![Reload notification message](images/reloadNotification.jpg) -->
 
-<img src="https://github.com/ArturoDent/command-alias/blob/master/images/commandPaletteWithDuplicateAliases.gif?raw=true" width="325" height="150" alt="Keybindings shortcuts demo"/>
+<img src="https://github.com/ArturoDent/command-alias/blob/master/images/commandPaletteWithDuplicateAliasess.gif?raw=true" width="825" height="350" alt="Keybindings shortcuts demo"/>
 
+<br/><br/>  
 
 ## Known Issues  
 
-* see Requirements above 
+* see Requirements above re: reload on changes
 
 
 ## Release Notes  
@@ -64,9 +69,8 @@ If you had this in your settings:
 
 * Initial release.
 
-## TODO
+### TODO
 
-* Detect re-use of aliases.
 * Add a QuickPick panel of commands from which to select and add to `command aliases` settings.
 
 

@@ -86,6 +86,11 @@ async function loadCommands(context) {
     }
   }
 
+  // deactivate();
+
+  context.subscriptions.forEach(subscription => subscription.dispose());
+  disposables = [];
+
     // {
     //   "command": "command-alias.editor.action.copyLinesDownAction.1",
     //   "title": "Shimmy"
