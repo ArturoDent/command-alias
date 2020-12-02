@@ -33,11 +33,11 @@ This extension contributes the following settings:
   ```
 The commands are the same as those you could copy from `Keyboard Shortcuts`.  Use `Copy Command ID` from each command's context menu to get the actual command.
 
-Commands are then generated from these settings either on load of the extension or when you make any change to its setting.  This extension's package.json is updated to contribute these commands and activationEvents.
+Commands are then generated from these settings either on load of the extension or when you make any change to its settings.  This extension's package.json is updated to contribute these commands and activationEvents.
 
 -----------
 
-You can re-use alaises for different commands - in that case vscode will show both alaiases and the commands they are associated with in the command palette so you could pick the one you want.  I suppose you could group commands in this way.
+You can re-use aliases for different commands - in that case vscode will show both aliases and the commands they are associated with in the command palette so you could pick the one you want.  I suppose you could group commands in this way.
 
 If you had this in your settings:  
 
@@ -61,6 +61,7 @@ If you had this in your settings:
 ## Known Issues  
 
 * see Requirements above re: reload on changes
+* Don't use the same command in multiple places in the settings.
 
 
 ## Release Notes  
@@ -71,6 +72,7 @@ If you had this in your settings:
 
 ### TODO
 
+* Prevent listing the same command multiple times in the settings.
 * Add a QuickPick panel of commands from which to select and add to `command aliases` settings.
 
 
