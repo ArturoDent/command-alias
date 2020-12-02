@@ -2,7 +2,7 @@
  "name": "command-alias",
  "displayName": "Command Alias",
  "description": "Create aliases for built-in commands",
- "version": "0.0.1",
+ "version": "0.1.0",
  "publisher": "ArturoDent",
  "engines": {
   "vscode": "^1.51.0"
@@ -10,9 +10,13 @@
  "preview": true,
  "repository": {
   "type": "git",
-  "url": "https://github.com/ArturoDent/folder-operations"
+  "url": "https://github.com/ArturoDent/command-alias"
  },
- "keywords": ["commands", "alias", "rename"],
+ "keywords": [
+  "commands",
+  "alias",
+  "rename"
+ ],
  "license": "MIT",
  "categories": [
   "Other"

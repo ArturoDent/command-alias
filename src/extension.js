@@ -13,6 +13,9 @@ let disposables = [];
  */
 async function activate(context) {
 
+  // remove
+  let thisExtension = vscode.extensions.getExtension('ArturoDent.command-alias');
+
   let disposable;
 
   await loadCommands(context);
