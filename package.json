@@ -20,24 +20,8 @@
  "activationEvents": [
   "onStartupFinished",
   "onCommand:command-alias.createAliases",
-  "onCommand:command-alias.editor.action.copyLinesDownAction.1",
-  "onCommand:command-alias.editor.action.copyLinesDownAction.2",
-  "onCommand:command-alias.editor.action.copyLinesDownAction.3",
-  "onCommand:command-alias.editor.action.copyLinesDownAction.4",
-  "onCommand:command-alias.editor.action.copyLinesDownAction.5",
-  "onCommand:command-alias.editor.action.copyLinesDownAction.6",
-  "onCommand:command-alias.editor.action.copyLinesDownAction.7",
-  "onCommand:command-alias.editor.action.copyLinesDownAction.8",
-  "onCommand:command-alias.editor.action.copyLinesDownAction.9",
-  "onCommand:command-alias.editor.action.copyLinesDownAction.10",
-  "onCommand:command-alias.editor.action.copyLinesDownAction.11",
-  "onCommand:command-alias.editor.action.copyLinesDownAction.12",
-  "onCommand:command-alias.editor.action.clipboardPasteAction.1",
-  "onCommand:command-alias.editor.action.clipboardPasteAction.2",
-  "onCommand:command-alias.editor.action.clipboardPasteAction.3",
-  "onCommand:command-alias.editor.action.clipboardPasteAction.4",
-  "onCommand:command-alias.editor.action.clipboardPasteAction.5",
-  "onCommand:command-alias.editor.action.clipboardCutAction.1"
+  "onCommand:command-alias.addRootFolder.1",
+  "onCommand:command-alias.explorer.newFolder.1"
  ],
  "main": "./src/extension.js",
  "contributes": {
@@ -47,76 +31,12 @@
     "title": "Command Alias: Create aliases from vscode's built-in commands"
    },
    {
-    "command": "command-alias.editor.action.copyLinesDownAction.1",
-    "title": "Shimmy"
+    "command": "command-alias.addRootFolder.1",
+    "title": "mkdir"
    },
    {
-    "command": "command-alias.editor.action.copyLinesDownAction.2",
-    "title": "slide"
-   },
-   {
-    "command": "command-alias.editor.action.copyLinesDownAction.3",
-    "title": "yump"
-   },
-   {
-    "command": "command-alias.editor.action.copyLinesDownAction.4",
-    "title": "yump2"
-   },
-   {
-    "command": "command-alias.editor.action.copyLinesDownAction.5",
-    "title": "yump3"
-   },
-   {
-    "command": "command-alias.editor.action.copyLinesDownAction.6",
-    "title": "yump4"
-   },
-   {
-    "command": "command-alias.editor.action.copyLinesDownAction.7",
-    "title": "yump5"
-   },
-   {
-    "command": "command-alias.editor.action.copyLinesDownAction.8",
-    "title": "yump6"
-   },
-   {
-    "command": "command-alias.editor.action.copyLinesDownAction.9",
-    "title": "yump7"
-   },
-   {
-    "command": "command-alias.editor.action.copyLinesDownAction.10",
-    "title": "yump8"
-   },
-   {
-    "command": "command-alias.editor.action.copyLinesDownAction.11",
-    "title": "yump9"
-   },
-   {
-    "command": "command-alias.editor.action.copyLinesDownAction.12",
-    "title": "yump10"
-   },
-   {
-    "command": "command-alias.editor.action.clipboardPasteAction.1",
-    "title": "glue3"
-   },
-   {
-    "command": "command-alias.editor.action.clipboardPasteAction.2",
-    "title": "glue4"
-   },
-   {
-    "command": "command-alias.editor.action.clipboardPasteAction.3",
-    "title": "glue5"
-   },
-   {
-    "command": "command-alias.editor.action.clipboardPasteAction.4",
-    "title": "glue6"
-   },
-   {
-    "command": "command-alias.editor.action.clipboardPasteAction.5",
-    "title": "glue1"
-   },
-   {
-    "command": "command-alias.editor.action.clipboardCutAction.1",
-    "title": "non-glue"
+    "command": "command-alias.explorer.newFolder.1",
+    "title": "mkdir"
    }
   ],
   "configuration": {

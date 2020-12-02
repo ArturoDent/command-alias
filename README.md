@@ -1,65 +1,73 @@
-# command-alias README
+# Command Aliases  
 
-This is the README for your extension "command-alias". After writing up a brief description, we recommend including the following sections.
+  Create your own aliases for commands in vscode.  A command can have multiple aliases if you want.  The aliases are the command titles that show up in the command palette.  The built-in titles are not removed.  
 
-## Features
+  <br/>
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+## Requirements 
 
-For example if there is an image subfolder under your extension project workspace:
+When you make a change to these settings, you will need to (and will be prompted to) reload vscode.  This is the only way to see the new aliases in the command palette.  Or, of course, any changes will take affect the next time vscode is started.
 
-\!\[feature X\]\(images/feature-x.png\)
+<br/>
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+<!-- ![Reload notification message](images/reloadNotification.jpg) -->
 
-## Requirements
+<img src="https://github.com/ArturoDent/command-alias/blob/master/images/reloadNotification.jpg?raw=true" width="325" height="150" alt="Keybindings shortcuts demo"/>
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+<br/><br/>
 
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
+## Extension Settings  
 
 This extension contributes the following settings:
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+* `command aliases`: a group of commands and titles/aliases.  Example in settings.json (user settings): 
 
-## Known Issues
+```jsonc
+  "command aliases": {
+    // multiple aliases for the same command
+    "editor.action.copyLinesDownAction": ["Shimmy", "slide", "copyDown"],
+    "explorer.newFolder": "mkdir",        // single alias doesn't need to be in an array but can be
+    "editor.action.clipboardCutAction": "delete to clipboard"
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+  }
+  ```
+Commands are then generated from these settings either on load of the extension or when you make any change to its setting.  This extension's package.json is updated to contribute these commands and activationEvents.
 
-## Release Notes
+-----------
 
-Users appreciate release notes as you update your extension.
+You can re-use alaises for different commands - in that case vscode will show both alaiases and the commands they are associated with in the command palette so you could pick the one you want.  I suppose you could group commands in this way.
 
-### 1.0.0
+If you had this in your settings:  
 
-Initial release of ...
+```jsonc
+  "command aliases": {
+    "addRootFolder": "mkdir",
+    "explorer.newFolder": "mkdir"
+  }
+  ```
 
-### 1.0.1
+  you would see in this in your command palette upon typing `mkdir`:
 
-Fixed issue #.
+  <!-- ![Reload notification message](images/reloadNotification.jpg) -->
 
-### 1.1.0
+<img src="https://github.com/ArturoDent/command-alias/blob/master/images/commandPaletteWithDuplicateAliases.gif?raw=true" width="325" height="150" alt="Keybindings shortcuts demo"/>
 
-Added features X, Y, and Z.
+
+## Known Issues  
+
+* see Requirements above 
+
+
+## Release Notes  
+
+### 0.1.0
+
+* Initial release.
+
+## TODO
+
+* Detect re-use of aliases.
+* Add a QuickPick panel of commands from which to select and add to `command aliases` settings.
+
 
 -----------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
