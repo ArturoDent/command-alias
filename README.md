@@ -12,7 +12,7 @@ When you make a change to these settings, you will need to (and will be prompted
 
 <!-- ![Reload notification message](images/reloadNotification.jpg) -->
 
-<img src="https://github.com/ArturoDent/command-alias/blob/master/images/reloadNotification.jpg?raw=true" width="725" height="300" alt="Keybindings shortcuts demo"/>
+<img src="https://github.com/ArturoDent/command-alias/blob/master/images/reloadNotification.jpg?raw=true" width="625" height="200" alt="Keybindings shortcuts demo"/>
 
 <br/><br/>
 
@@ -54,7 +54,7 @@ If you had this in your settings:
 
   <!-- ![Reload notification message](images/reloadNotification.jpg) -->
 
-<img src="https://github.com/ArturoDent/command-alias/blob/master/images/commandPaletteWithDuplicateAliasess.gif?raw=true" width="825" height="350" alt="Keybindings shortcuts demo"/>
+<img src="https://github.com/ArturoDent/command-alias/blob/master/images/commandPaletteWithDuplicateAliasess.gif?raw=true" width="725" height="250" alt="Keybindings shortcuts demo"/>
 
 <br/><br/>  
 
