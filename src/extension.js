@@ -13,27 +13,32 @@ let disposables = [];
  */
 async function activate(context) {
 
-  // remove
+  // remove?
   let thisExtension = vscode.extensions.getExtension('ArturoDent.command-alias');
 
   let disposable;
 
-  await loadCommands(context);
+  // load this extension's settings, make commands and activation events from them
+  loadCommands(context);
 
   // if this extension's 'command aliases' settings are changed, reload the commands
   // notify user of the need to reload vscode
+  vscode.workspace.onDidChangeConfiguration(async (event) => {
 
-  // eslint-disable-next-line no-unused-vars
-  disposable = vscode.workspace.onDidChangeConfiguration(async (event) => {
-    loadCommands(context);
-    vscode.window
-      .showInformationMessage("You must reload vscode to see the changes you made to the 'command aliases' setting",
-        ...['Reload vscode', 'Do not Reload'])   // two buttons
-      .then(selected => {
-        if (selected === 'Reload vscode') vscode.commands.executeCommand('workbench.action.reloadWindow');
-        else vscode.commands.executeCommand('delete');
-    });
+    if (event.affectsConfiguration('command aliases')) {
+      
+      loadCommands(context);  // reload commands with their aliases
+
+      vscode.window
+        .showInformationMessage("You must reload vscode to see the changes you made to the 'command aliases' setting.",
+          ...['Reload vscode', 'Do not Reload'])   // two buttons
+        .then(selected => {
+          if (selected === 'Reload vscode') vscode.commands.executeCommand('workbench.action.reloadWindow');
+          else vscode.commands.executeCommand('delete');
+        });
+    }
   });
+
   context.subscriptions.push(disposable);
   disposables.push(disposable);
 
@@ -89,18 +94,16 @@ async function loadCommands(context) {
     }
   }
 
-  // deactivate();
-
-  context.subscriptions.forEach(subscription => subscription.dispose());
-  disposables = [];
-
     // {
     //   "command": "command-alias.editor.action.copyLinesDownAction.1",
     //   "title": "Shimmy"
     //  },
+  
   for (const pcommand of packageCommands) {
     if (pcommand.command !== 'command-alias.createAliases') {
+
       let makeCommand = pcommand.command.replace(/^command-alias\./m, '').replace(/\.\d+$/m, '');
+
       disposable = vscode.commands.registerCommand(pcommand.command, function () {
         vscode.commands.executeCommand(makeCommand);
       });
@@ -112,6 +115,7 @@ async function loadCommands(context) {
 
 /**
  * @description - are the settings and package.json commands the same?
+ * 
  * @param {Array} settings - commands constructed from the settings.json 'command aliases'
  * @param {Array} packages - the pre-existing commands from package.json
  * @returns {boolean}
@@ -128,6 +132,7 @@ function commandArraysAreEquivalent(settings, packages) {
 
 /**
  * @description - are the settings and package.json activationEvents the same?
+ * 
  * @param {Array} settings - activationEvents constructed from the settings.json 'command aliases'
  * @param {Array} packages - the pre-existing activationEvents from package.json
  * @returns {boolean}

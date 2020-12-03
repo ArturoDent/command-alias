@@ -10,7 +10,7 @@ exports.getCurrentSettings = async function () {
 
   let currentSettings = vscode.workspace.getConfiguration('command aliases');
   let commandArray = Object.entries(currentSettings);
-  commandArray = commandArray.filter(current => (typeof current[1] === 'string') || (typeof current[1] === 'object'));
+  commandArray = commandArray.filter(current => (typeof current[1] === 'string') || (Array.isArray(current[1])));
   
   return commandArray;
 };
@@ -28,7 +28,8 @@ exports.makePackageCommandsFromSettings = async function (settings) {
 
   let newCommand = {};
   newCommand.command = "command-alias.createAliases";
-  newCommand.title = "Command Alias: Create aliases from vscode's built-in commands";
+  newCommand.title = "Create aliases from vscode's built-in commands";
+  newCommand.category = "Alias"
 
   settingsJSON.push(newCommand);
   let numAlias;
@@ -42,6 +43,7 @@ exports.makePackageCommandsFromSettings = async function (settings) {
         let newCommand = {};
         newCommand.command = `command-alias.${ setting[0] }.${ numAlias++ }`;
         newCommand.title = alias;
+        newCommand.category = "Alias";
         settingsJSON.push(newCommand);
       }
     }
@@ -50,6 +52,7 @@ exports.makePackageCommandsFromSettings = async function (settings) {
       let newCommand = {};
       newCommand.command = `command-alias.${ setting[0] }.${ numAlias }`;
       newCommand.title = setting[1];
+      newCommand.category = "Alias";
       settingsJSON.push(newCommand);
     }
   };
