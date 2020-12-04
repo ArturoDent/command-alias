@@ -14,27 +14,32 @@ let disposables = [];
 async function activate(context) {
 
   // remove?
-  let thisExtension = vscode.extensions.getExtension('ArturoDent.command-alias');
+  // let thisExtension = vscode.extensions.getExtension('ArturoDent.command-alias');
 
   let disposable;
 
+  // get the 'category' setting: as in 'Alias' (the default) in 'Alias:mkdir' in the command palette
+  // commandAlias.category = String
+  let category = await settingsJS.getCategorySetting();
+
   // load this extension's settings, make commands and activation events from them
-  loadCommands(context);
+  loadCommands(context, category);
 
   // if this extension's 'command aliases' settings are changed, reload the commands
   // notify user of the need to reload vscode
   vscode.workspace.onDidChangeConfiguration(async (event) => {
 
-    if (event.affectsConfiguration('command aliases')) {
+    // if (event.affectsConfiguration('command aliases')) {
+    if (event.affectsConfiguration('command aliases') || event.affectsConfiguration('commandAlias')) {
       
-      loadCommands(context);  // reload commands with their aliases
+      loadCommands(context, await settingsJS.getCategorySetting());  // reload commands with their aliases
 
       vscode.window
         .showInformationMessage("You must reload vscode to see the changes you made to the 'command aliases' setting.",
           ...['Reload vscode', 'Do not Reload'])   // two buttons
         .then(selected => {
           if (selected === 'Reload vscode') vscode.commands.executeCommand('workbench.action.reloadWindow');
-          else vscode.commands.executeCommand('delete');
+          else vscode.commands.executeCommand('leaveEditorMessage');
         });
     }
   });
@@ -62,8 +67,9 @@ async function activate(context) {
  * @description - and vscode.commands.registerCommands() all commands whether new or old
  * 
  * @param {*} context - the extension.context
+ * @param {String} category - like 'Alias', the default, in 'Alias:mkdir' in the command palette
  */
-async function loadCommands(context) {
+async function loadCommands(context,category) {
   
   let thisExtension = vscode.extensions.getExtension('ArturoDent.command-alias');
   let disposable;
@@ -78,7 +84,7 @@ async function loadCommands(context) {
   if (currentSettings) {
      
     packageCommands = await packageJSON.getPackageJSONCommands();
-    settingsPackageCommands = await settingsJS.makePackageCommandsFromSettings(currentSettings);
+    settingsPackageCommands = await settingsJS.makePackageCommandsFromSettings(currentSettings, category);
 
     packageEvents = thisExtension.packageJSON.activationEvents;
     settingsEvents = await settingsJS.makeSettingsEventsFromSettingsPackageCommands(settingsPackageCommands);
@@ -99,11 +105,19 @@ async function loadCommands(context) {
     //   "title": "Shimmy"
     //  },
   
+  const allCommands = await vscode.commands.getCommands(true);
+
+  
   for (const pcommand of packageCommands) {
+
+    // skip already regisitered commands
+    if (allCommands.includes(pcommand.command)) continue;
+
     if (pcommand.command !== 'command-alias.createAliases') {
 
       let makeCommand = pcommand.command.replace(/^command-alias\./m, '').replace(/\.\d+$/m, '');
 
+      // rejected promise: Error: command 'someCommand' already exists fixed with includes() check above
       disposable = vscode.commands.registerCommand(pcommand.command, function () {
         vscode.commands.executeCommand(makeCommand);
       });
@@ -125,7 +139,8 @@ function commandArraysAreEquivalent(settings, packages) {
   if (settings.length !== packages.length) return false;
 
   return settings.every(setting => packages.some(pcommand => {
-    return (pcommand.command === setting.command) && (pcommand.title === setting.title);
+    return (pcommand.command === setting.command) && (pcommand.title === setting.title) && 
+    (pcommand.category === setting.category);
   }));
 }
 

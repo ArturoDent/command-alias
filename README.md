@@ -4,13 +4,11 @@
 
   <br/>
 
-## Requirements 
+## Requirements
 
 When you make a change to these settings, you will need to (and will be prompted to) reload vscode.  This is the only way to see the new aliases in the Command Palette.  Or, of course, any changes will take affect the next time vscode is started.
 
 <br/>
-
-<!-- ![Reload notification message](images/reloadNotification.jpg) -->
 
 <img src="https://github.com/ArturoDent/command-alias/blob/master/images/reloadNotification.jpg?raw=true" width="625" height="200" alt="Keybindings shortcuts demo"/>
 
@@ -18,9 +16,9 @@ When you make a change to these settings, you will need to (and will be prompted
 
 ## Extension Settings  
 
-This extension contributes the following settings:
+This extension contributes the following settings group:
 
-* `command aliases`: a group of commands and titles/aliases.  Example in settings.json (user settings): 
+* `command aliases`: a group of commands and their titles or aliases.  You choose a command and add an alias to it.  Example in `settings.json` (user settings): 
 
 ```jsonc
   "command aliases": {
@@ -33,9 +31,21 @@ This extension contributes the following settings:
     "workbench.action.reloadWindow": "restart"
   }
   ```
-The commands are the same as those you could copy from `Keyboard Shortcuts`.  Use `Copy Command ID` from each command's context menu to get the actual command.
+The commands are the same as those you could copy from the `Keyboard Shortcuts` list.  Use `Copy Command ID` from each command's context menu to get the actual command.
 
 Commands are then generated from these settings either on load of the extension or when you make any change to its settings.  This extension's package.json is updated to contribute these commands and activationEvents.
+
+<br/>
+
+This extension also contributes the following setting:
+
+* `commandAlias.category`: the 'category' is a word that precedes your command aliases in the Command Palette, like the word `Debug` in `Debug: Clear Console`.  
+
+The default category is `Alias` so that your commands may appear as `Alias: mkdir` or `Alias: touch` for example.  Youy can change that preceding word to an empty string or to another word in the UI Settings or in your own `settings.json` manually.
+
+Example in `settings.json` (user settings): 
+
+<img src="https://github.com/ArturoDent/command-alias/blob/master/images/settingsDemo.gif?raw=true" width="725" height="250" alt="settings demo"/>
 
 -----------
 
@@ -54,27 +64,25 @@ If you had this in your settings:
 
   <br/>
 
-  <!-- ![Reload notification message](images/reloadNotification.jpg) -->
-
 <img src="https://github.com/ArturoDent/command-alias/blob/master/images/commandPaletteWithDuplicateAliasess.gif?raw=true" width="725" height="250" alt="Keybindings shortcuts demo"/>
 
 <br/><br/>
 
-> [The gif above is slightly out-of-date.  The commands will now appear with **Alias:** preceding in the Command Palette, as in `Alias: mkdir`.  If you don't want that `Alias: ` in front, let me know in a feature request.]
+> The gif above uses a `commandAlias.category` set to the empty string so no category word is shown preceding the command.
+<br/> 
 
-<br/><br/>  
+-----------
 
 ## Known Issues  
 
-* see Requirements above re: reload on changes
+* see `Requirements` above re: reload on changes.
 * Don't use the same command in multiple places in the settings.
 
 
 ## Release Notes  
 
 * 0.1.0 &emsp;  Initial release.
-
-* 0.1.2 &emsp;  Fixed: notification only appears if change 'command-alias' setting.
+* 0.1.2 &emsp;  Fixed: notification only appears if change 'command-alias' setting.  
 
 ### TODO
 

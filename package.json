@@ -2,7 +2,7 @@
  "name": "command-alias",
  "displayName": "Command Alias",
  "description": "Create aliases for built-in commands",
- "version": "0.1.2",
+ "version": "0.2.0",
  "publisher": "ArturoDent",
  "engines": {
   "vscode": "^1.51.0"
@@ -35,10 +35,17 @@
    }
   ],
   "configuration": {
-   "type": "object",
-   "title": "Set of command aliases",
+   "title": "Aliases (the labels shown in the Command Palette) created by users",
    "properties": {
-    "command aliases": {}
+    "command aliases": {
+     "type": "object",
+     "description": "An object containing command and label/alias pairs."
+    },
+    "commandAlias.category": {
+     "type": "string",
+     "default": "Alias",
+     "markdownDescription": "A word to precede all command labels in the Command Palette, like the default `Alias` as in `Alias:mkdir`.  Leave empty to use no alias."
+    }
    }
   }
  },

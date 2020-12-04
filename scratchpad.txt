@@ -1,0 +1,6 @@
+// "configuration": {
+  //  "type": "object",
+  //  "title": "Set of command aliases",
+  //  "properties": {
+  //   "command aliases": {}
+  //  },

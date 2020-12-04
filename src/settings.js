@@ -15,21 +15,32 @@ exports.getCurrentSettings = async function () {
   return commandArray;
 };
 
+/**
+ * @description - get the 
+ * 
+ * @returns - a string
+ */
+exports.getCategorySetting = async function () {  
+
+  return await vscode.workspace.getConfiguration('commandAlias').get('category');  
+};
+
 
 /**
  * @description - transform the settings into package.json- style commands {command: "", title: ""}
  * 
  * @param {object} settings - this extension's settings from getCurrentSettings()
+ * @param {String} userCategory - the category of the command in the command palette
  * @returns - package.json form of 'contributes.commands'
  */
-exports.makePackageCommandsFromSettings = async function (settings) {
+exports.makePackageCommandsFromSettings = async function (settings, userCategory) {
   
   let settingsJSON = [];
 
   let newCommand = {};
   newCommand.command = "command-alias.createAliases";
   newCommand.title = "Create aliases from vscode's built-in commands";
-  newCommand.category = "Alias"
+  newCommand.category = userCategory;
 
   settingsJSON.push(newCommand);
   let numAlias;
@@ -43,7 +54,7 @@ exports.makePackageCommandsFromSettings = async function (settings) {
         let newCommand = {};
         newCommand.command = `command-alias.${ setting[0] }.${ numAlias++ }`;
         newCommand.title = alias;
-        newCommand.category = "Alias";
+        newCommand.category = userCategory;
         settingsJSON.push(newCommand);
       }
     }
@@ -52,7 +63,7 @@ exports.makePackageCommandsFromSettings = async function (settings) {
       let newCommand = {};
       newCommand.command = `command-alias.${ setting[0] }.${ numAlias }`;
       newCommand.title = setting[1];
-      newCommand.category = "Alias";
+      newCommand.category = userCategory;
       settingsJSON.push(newCommand);
     }
   };
