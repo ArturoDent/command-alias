@@ -45,7 +45,7 @@ The default category is `Alias` so that your commands may appear as `Alias: mkdi
 
 Example in `settings.json` (user settings): 
 
-<img src="https://github.com/ArturoDent/command-alias/blob/master/images/settingsDemo.gif?raw=true" width="725" height="250" alt="settings demo"/>
+<img src="https://github.com/ArturoDent/command-alias/blob/master/images/settingsDemo.gif?raw=true" width="1000" height="400" alt="settings demo"/>
 
 -----------
 
