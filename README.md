@@ -6,7 +6,7 @@
 
 ## Requirements
 
-When you make a change to these settings, you will need to (and will be prompted to) reload vscode.  This is the only way to see the new aliases in the Command Palette.  Or, of course, any changes will take affect the next time vscode is started.
+When you make a change to these settings, you will need to (and will be prompted to) reload vscode.  This is the only way to have the new aliases appear in the Command Palette.  Or, of course, any changes will take affect the next time vscode is started.
 
 <br/>
 
@@ -75,14 +75,18 @@ If you had this in your settings:
 
 ## Known Issues  
 
-* see `Requirements` above re: reload on changes.
-* Don't use the same command in multiple places in the settings.
+* see `Requirements` above re: reload on changes.  
+
+* Don't use the same command in multiple places in the settings.    
+
+* If there are multiple vscode windows open with this extension running, they will all get the notification prompt to reload when making a `command alias` setting change in any one window.  It has been my experience that it is sufficient to just reload the window where you made the settings changes.
 
 
 ## Release Notes  
 
 * 0.1.0 &emsp;  Initial release.
-* 0.1.2 &emsp;  Fixed: notification only appears if change 'command-alias' setting.  
+* 0.1.2 &emsp;  Fixed: notification only appears if change 'command-alias' setting.
+* 0.2.1 &emsp;  Worked on reload not updating properly on a `category` change.    
 
 ### TODO
 

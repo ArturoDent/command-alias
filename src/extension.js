@@ -20,10 +20,10 @@ async function activate(context) {
 
   // get the 'category' setting: as in 'Alias' (the default) in 'Alias:mkdir' in the command palette
   // commandAlias.category = String
-  let category = await settingsJS.getCategorySetting();
+  let category = settingsJS.getCategorySetting();
 
   // load this extension's settings, make commands and activation events from them
-  loadCommands(context, category);
+  await loadCommands(context, category);
 
   // if this extension's 'command aliases' settings are changed, reload the commands
   // notify user of the need to reload vscode
@@ -32,7 +32,8 @@ async function activate(context) {
     // if (event.affectsConfiguration('command aliases')) {
     if (event.affectsConfiguration('command aliases') || event.affectsConfiguration('commandAlias')) {
       
-      loadCommands(context, await settingsJS.getCategorySetting());  // reload commands with their aliases
+      let category = settingsJS.getCategorySetting();
+      await loadCommands(context, category);  // reload commands with their aliases
 
       vscode.window
         .showInformationMessage("You must reload vscode to see the changes you made to the 'command aliases' setting.",
@@ -79,15 +80,15 @@ async function loadCommands(context,category) {
   let packageEvents;
   let settingsEvents;
 
-  const currentSettings = await settingsJS.getCurrentSettings();
+  const currentSettings = settingsJS.getCurrentSettings();
 
   if (currentSettings) {
      
-    packageCommands = await packageJSON.getPackageJSONCommands();
-    settingsPackageCommands = await settingsJS.makePackageCommandsFromSettings(currentSettings, category);
+    packageCommands = packageJSON.getPackageJSONCommands();
+    settingsPackageCommands = settingsJS.makePackageCommandsFromSettings(currentSettings, category);
 
     packageEvents = thisExtension.packageJSON.activationEvents;
-    settingsEvents = await settingsJS.makeSettingsEventsFromSettingsPackageCommands(settingsPackageCommands);
+    settingsEvents = settingsJS.makeSettingsEventsFromSettingsPackageCommands(settingsPackageCommands);
 
 
     if (!commandArraysAreEquivalent(settingsPackageCommands, packageCommands) ||

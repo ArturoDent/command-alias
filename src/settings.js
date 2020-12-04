@@ -6,7 +6,7 @@ const vscode = require('vscode');
  * 
  * @returns - an array of settings.json entries for this extension
  */
-exports.getCurrentSettings = async function () {  
+exports.getCurrentSettings = function () {  
 
   let currentSettings = vscode.workspace.getConfiguration('command aliases');
   let commandArray = Object.entries(currentSettings);
@@ -20,9 +20,9 @@ exports.getCurrentSettings = async function () {
  * 
  * @returns - a string
  */
-exports.getCategorySetting = async function () {  
+exports.getCategorySetting = function () {  
 
-  return await vscode.workspace.getConfiguration('commandAlias').get('category');  
+  return vscode.workspace.getConfiguration('commandAlias').get('category');  
 };
 
 
@@ -33,7 +33,7 @@ exports.getCategorySetting = async function () {
  * @param {String} userCategory - the category of the command in the command palette
  * @returns - package.json form of 'contributes.commands'
  */
-exports.makePackageCommandsFromSettings = async function (settings, userCategory) {
+exports.makePackageCommandsFromSettings = function (settings, userCategory) {
   
   let settingsJSON = [];
 
@@ -79,7 +79,7 @@ exports.makePackageCommandsFromSettings = async function (settings, userCategory
  * @param {object} settingsCommands - 
  * @returns - an array of strings for package.json activationEvents
  */
-exports.makeSettingsEventsFromSettingsPackageCommands = async function (settingsCommands) {
+exports.makeSettingsEventsFromSettingsPackageCommands = function (settingsCommands) {
 
   // "activationEvents": [
   //   "onStartupFinished",

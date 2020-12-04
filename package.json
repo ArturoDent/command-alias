@@ -2,7 +2,7 @@
  "name": "command-alias",
  "displayName": "Command Alias",
  "description": "Create aliases for built-in commands",
- "version": "0.2.0",
+ "version": "0.2.1",
  "publisher": "ArturoDent",
  "engines": {
   "vscode": "^1.51.0"
@@ -31,11 +31,11 @@
    {
     "command": "command-alias.createAliases",
     "title": "Create aliases from vscode's built-in commands",
-    "category": "Alias"
+    "category": ""
    }
   ],
   "configuration": {
-   "title": "Aliases (the labels shown in the Command Palette) created by users",
+   "title": "Aliases (command labels) created by users",
    "properties": {
     "command aliases": {
      "type": "object",
