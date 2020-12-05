@@ -1,12 +1,11 @@
 # Command Aliases  
 
   Create your own aliases for commands in vscode.  A command can have multiple aliases if you want.  The aliases are the command titles that show up in the Command Palette.  The built-in titles are not removed.  
-
   <br/>
 
 ## Requirements
 
-* Make sure your `settings.json` file is saved and not in a dirty state.  This extesnion cannot write into a dirty file = silent failure.
+* Make sure your `settings.json` file is saved and not in a dirty state.  This extension cannot write into a dirty file = silent failure.
 
 * When you make a change to these settings, you will need to (and will be prompted to) reload vscode.  This is the only way to have the new aliases appear in the Command Palette.  Or, of course, any changes will take affect the next time vscode is started.
 
@@ -94,7 +93,7 @@ Examples in `settings.json` (user settings):
 
 <img src="https://github.com/ArturoDent/command-alias/blob/master/images/AliasDemoWithhAlias.gif?raw=true" width="725" height="600" alt="Custom category demo"/>
 
-<br/>
+<br/><br/>
 
 <img src="https://github.com/ArturoDent/command-alias/blob/master/images/AliasDemoEmptyString.gif?raw=true" width="725" height="600" alt="empty string category demo"/>
 
@@ -119,10 +118,10 @@ If you had this in your settings:
 
 <img src="https://github.com/ArturoDent/command-alias/blob/master/images/commandPaletteWithDuplicateAliasess.gif?raw=true" width="725" height="350" alt="duplicate aliases in the commnad palette demo"/>
 
-<br/><br/>
+<br/>
 
 > The gif above uses a `commandAlias.category` set to the empty string so no category word is shown preceding the command.
-<br/>
+
 
 -----------
 
