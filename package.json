@@ -2,7 +2,7 @@
  "name": "command-alias",
  "displayName": "Command Alias",
  "description": "Create aliases for built-in commands",
- "version": "0.2.2",
+ "version": "0.3.0",
  "publisher": "ArturoDent",
  "engines": {
   "vscode": "^1.51.0"
@@ -23,14 +23,7 @@
  ],
  "activationEvents": [
   "onStartupFinished",
-  "onCommand:command-alias.createAliases",
-  "onCommand:command-alias.explorer.newFile.1",
-  "onCommand:command-alias.explorer.newFolder.1",
-  "onCommand:command-alias.history.showPrevious.1",
-  "onCommand:command-alias.history.showNext.1",
-  "onCommand:command-alias.undo.1",
-  "onCommand:command-alias.redo.1",
-  "onCommand:command-alias.setContext.1"
+  "onCommand:command-alias.createAliases"
  ],
  "main": "./src/extension.js",
  "contributes": {
@@ -38,42 +31,7 @@
    {
     "command": "command-alias.createAliases",
     "title": "Create aliases from vscode's built-in commands",
-    "category": ""
-   },
-   {
-    "command": "command-alias.explorer.newFile.1",
-    "title": "touch",
-    "category": ""
-   },
-   {
-    "command": "command-alias.explorer.newFolder.1",
-    "title": "mkdir",
-    "category": ""
-   },
-   {
-    "command": "command-alias.history.showPrevious.1",
-    "title": "<defaultAlias>",
-    "category": ""
-   },
-   {
-    "command": "command-alias.history.showNext.1",
-    "title": "<defaultAlias>",
-    "category": ""
-   },
-   {
-    "command": "command-alias.undo.1",
-    "title": "<defaultAlias>",
-    "category": ""
-   },
-   {
-    "command": "command-alias.redo.1",
-    "title": "sdfsdfsdf",
-    "category": ""
-   },
-   {
-    "command": "command-alias.setContext.1",
-    "title": "<defaultAlias>",
-    "category": ""
+    "category": "Alias"
    }
   ],
   "configuration": {
@@ -86,7 +44,8 @@
     "commandAlias.category": {
      "type": "string",
      "default": "Alias",
-     "markdownDescription": "A word to precede all command labels in the Command Palette, like the default `Alias` as in `Alias:mkdir`.  Leave empty to use no alias."
+     "description": "A word to precede all created commands, like the default 'Alias' as in 'Alias:  touch' in the Command Palette.",
+     "markdownDescription": "A word to precede all created commands in the Command Palette, like the default `Alias` as in `Alias: mkdir`.  Leave empty to use no alias."
     }
    }
   }
