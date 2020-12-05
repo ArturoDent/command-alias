@@ -6,6 +6,8 @@
 
 ## Requirements
 
+Make sure your `settings.json` file is saved and not in a dirty state.  This extesnion cannot write into a dirty file = silent failure.
+
 When you make a change to these settings, you will need to (and will be prompted to) reload vscode.  This is the only way to have the new aliases appear in the Command Palette.  Or, of course, any changes will take affect the next time vscode is started.
 
 <br/>
@@ -66,6 +68,10 @@ This extension contributes the following settings group:
 The commands are the same as those you could copy from the `Keyboard Shortcuts` list.  Use `Copy Command ID` from each command's context menu to get the actual command.
 
 Commands are then generated from these settings either on load of the extension or when you make any change to its settings.  This extension's package.json is updated to contribute these commands and activationEvents.
+
+<br/>
+
+<img src="https://github.com/ArturoDent/command-alias/blob/master/images/fullDemo.gif?raw=true" width="725" height="600" alt="Keybindings shortcuts demo"/>
 
 <br/>
 
