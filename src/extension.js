@@ -27,7 +27,7 @@ async function activate(context) {
 
   // if this extension's 'command aliases' settings are changed, reload the commands
   // notify user of the need to reload vscode
-  vscode.workspace.onDidChangeConfiguration(async (event) => {
+  context.subscriptions.push(vscode.workspace.onDidChangeConfiguration(async (event) => {
 
     // if (event.affectsConfiguration('command aliases')) {
     if (event.affectsConfiguration('command aliases') || event.affectsConfiguration('commandAlias')) {
@@ -43,17 +43,38 @@ async function activate(context) {
           else vscode.commands.executeCommand('leaveEditorMessage');
         });
     }
-  });
+  }));
 
   context.subscriptions.push(disposable);
   disposables.push(disposable);
 
-  disposable = vscode.commands.registerCommand('command-alias.createAliases', function () {
+  disposable = vscode.commands.registerCommand('command-alias.createAliases', async function () {
 
-    loadCommandQuickPick().then(commands => {
-      if (!commands) return;
-      // call function to add chosen commands to settings.json (global/**user**/workspace?)
-      console.log(commands);
+    // QuickPick returns an array of strings: 'commands'
+    loadCommandQuickPick().then(async commands => {
+
+      if (!commands) return;  // user closed without selecting any
+
+      let inputBoxOptions = {
+        ignoreFocusOut: true
+        // placeHolder: `<enter your alias here>`,
+      };
+
+      let newCommands = {};
+
+      for (const command of commands) {
+
+        inputBoxOptions.prompt = `Enter an alias for the command: ${ command } . . . . . `;
+        inputBoxOptions.placeHolder = `your alias for ${ command } here`;
+
+        await vscode.window.showInputBox(inputBoxOptions)
+          .then(alias => {
+            newCommands[command] = alias;
+          });
+      }
+      // newCommands = { history.showPrevious: "Alias1", history.showNext: "Alias2" }
+      // call function to add chosen commands to settings.json (global= user/workspace/workspaceFolder?)
+      updateCommandAliasesSettings(newCommands);
     });
   });
 
@@ -178,6 +199,41 @@ function loadCommandQuickPick() {
     canPickMany: true,
     placeHolder: "Select as many commands as you want for which to create aliases",
   });
+}
+
+/**
+ * @description - add new items (with a <defaultAlias> if necessary) to user settings
+ * 
+ * @param {Object} newCommands - commands: aliases as selected in the QuickPick
+ */
+async function updateCommandAliasesSettings(newCommands) {
+  
+  // the {} at the end is a default value to return if no value is found
+  const currentValue = vscode.workspace.getConfiguration().get('command aliases', {});
+  let newValues = {};
+  
+  // newCommands = { history.showPrevious: "Alias1", history.showNext: "Alias2" }
+  for (let [key, value] of Object.entries(newCommands)) {
+    value = value ? value : `<defaultAlias>`;
+    newValues = { ...newValues, ...{ [key]: value } }
+  }
+  const updatedValue = { ...currentValue, ...newValues };
+
+  // vscode.ConfigurationTarget.Global = user settings.json
+  await vscode.workspace.getConfiguration().update('command aliases', updatedValue, vscode.ConfigurationTarget.Global);
+
+  // if (missingAlias) {
+  //   vscode.window
+  //     .showInformationMessage(`Do you want to open your settings.json to add the missing aliases?  
+  //     You can't leave an alias as an empty string - it will generate an error message.`,
+  //       { modal: true },
+  //       ...['Open Settings'])   // two buttons: 'Open Settings' and 'Cancel' (which is auto-generated)
+  //     .then(selected => {
+  //   if (selected === 'Open Settings') vscode.commands.executeCommand('workbench.action.openSettingsJson');
+  //         //  .then() scroll to command aliases settings location, select missing alias
+  //       // else vscode.commands.executeCommand('leaveEditorMessage');
+  //     });
+  // }
 }
     
 exports.activate = activate;
