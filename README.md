@@ -6,13 +6,13 @@
 
 ## Requirements
 
-Make sure your `settings.json` file is saved and not in a dirty state.  This extesnion cannot write into a dirty file = silent failure.
+* Make sure your `settings.json` file is saved and not in a dirty state.  This extesnion cannot write into a dirty file = silent failure.
 
-When you make a change to these settings, you will need to (and will be prompted to) reload vscode.  This is the only way to have the new aliases appear in the Command Palette.  Or, of course, any changes will take affect the next time vscode is started.
+* When you make a change to these settings, you will need to (and will be prompted to) reload vscode.  This is the only way to have the new aliases appear in the Command Palette.  Or, of course, any changes will take affect the next time vscode is started.
 
 <br/>
 
-<img src="https://github.com/ArturoDent/command-alias/blob/master/images/reloadNotification.jpg?raw=true" width="725" height="200" alt="Keybindings shortcuts demo"/>
+<img src="https://github.com/ArturoDent/command-alias/blob/master/images/reloadNotification.jpg?raw=true" width="725" height="200" alt="reload message"/>
 
 <br/>
 
@@ -41,9 +41,22 @@ Identical aliases for different commands do work.
 
 It is necessary to create these default alias entries because vscode **requires** all commands to have these labels/titles - there would be nothing to display in the Command Palette otherwise.  If you **manually** create an entry without an alias you will see this error message from vscode on trying to reload:
 
-<img src="https://github.com/ArturoDent/command-alias/blob/master/images/ErrorMessageNoTitle.jpg?raw=true" width="1000" height="250" alt="Keybindings shortcuts demo"/>
+<img src="https://github.com/ArturoDent/command-alias/blob/master/images/ErrorMessageNoTitle.jpg?raw=true" width="900" height="200" alt="no title error message"/>
 
+-------------
+<br/>
 
+General demo of the `command-alias.createAliases` process:
+
+<br/>
+
+<img src="https://github.com/ArturoDent/command-alias/blob/master/images/fullDemo.gif?raw=true" width="725" height="600" alt="createAliases command demo"/>  
+
+<br/>
+
+* Note that if you edit the `command.category` in the Settings UI as shown above that vscode has a rather short debounce lag for typing entries into that field.  So vscode will update the setting before you may be finished typing the `category` entry - and that will cause this extension to warn you about reloading vscode.  You can ignore the `reload` message until you are done with the Settings UI.
+
+-----------
 
 
 ----------------  
@@ -71,10 +84,6 @@ Commands are then generated from these settings either on load of the extension 
 
 <br/>
 
-<img src="https://github.com/ArturoDent/command-alias/blob/master/images/fullDemo.gif?raw=true" width="725" height="600" alt="Keybindings shortcuts demo"/>
-
-<br/>
-
 This extension also contributes the following setting:
 
 * `commandAlias.category`: the 'category' is text that precedes your command aliases in the Command Palette, like the word `Debug` in `Debug: Clear Console`.  
@@ -83,27 +92,15 @@ The default category is `Alias` so that your commands may appear as `Alias: mkdi
 
 Examples in `settings.json` (user settings): 
 
-<img src="https://github.com/ArturoDent/command-alias/blob/master/images/AliasDemoWithhAlias.gif?raw=true" width="5000" height="500" alt="settings demo"/>
+<img src="https://github.com/ArturoDent/command-alias/blob/master/images/AliasDemoWithhAlias.gif?raw=true" width="725" height="600" alt="Custom category demo"/>
 
 <br/>
 
-<img src="https://github.com/ArturoDent/command-alias/blob/master/images/AliasDemoWithhAlias.gif?raw=true" width="5000" height="500" alt="settings demo"/>
+<img src="https://github.com/ArturoDent/command-alias/blob/master/images/AliasDemoEmptyString.gif?raw=true" width="725" height="600" alt="empty string category demo"/>
 
 <br/>
 
------------------
-
-General demo:
-
-<br/>
-
-<img src="https://github.com/ArturoDent/command-alias/blob/master/images/settingsDemo.gif?raw=true" width="1000" height="400" alt="settings demo"/>  
-
-<br/>
-
-* Note that if you edit the `command.category` in the Settings UI as shown above that vscode has a rather short debounce lag for typing entries into that field.  So vscode will update the setting before you may be finished typing the `category` entry - and that will cause this extension to warn you about reloading vscode.  You can ignore the `reload` message until you are done with the Settings UI.
-
------------
+-----------------  
 
 You can re-use aliases for different commands - in that case vscode will show both aliases and the commands they are associated with in the Command Palette so you could pick the one you want.  I suppose you could group commands in this way.  [You could also group commands with the `category` setting.]
 
@@ -120,7 +117,7 @@ If you had this in your settings:
 
   <br/>
 
-<img src="https://github.com/ArturoDent/command-alias/blob/master/images/commandPaletteWithDuplicateAliasess.gif?raw=true" width="725" height="250" alt="Keybindings shortcuts demo"/>
+<img src="https://github.com/ArturoDent/command-alias/blob/master/images/commandPaletteWithDuplicateAliasess.gif?raw=true" width="725" height="350" alt="duplicate aliases in the commnad palette demo"/>
 
 <br/><br/>
 
@@ -148,7 +145,7 @@ If you had this in your settings:
 ### TODO
 
 [ X ]     - Add a QuickPick panel of commands from which to select and add to `command aliases` settings.  
-[&emsp; ] - Make the QuickPick panel take an a comma-separated list of aliases for each command.  
+[&emsp; ] - Make the QuickPick panel take an a comma-separated list of aliases for each command.   
 [&emsp; ] - Investigate the ability to specify any number of `categories` and assign to different commands.  
 
 
