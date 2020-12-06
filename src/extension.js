@@ -213,27 +213,44 @@ async function updateCommandAliasesSettings(newCommands) {
   let newValues = {};
   
   // newCommands = { history.showPrevious: "Alias1", history.showNext: "Alias2" }
+  // newCommands = { history.showNext: "Alias2, Alias3, Alias4" }
+
   for (let [key, value] of Object.entries(newCommands)) {
-    value = value ? value : `<defaultAlias>`;
+
+    // // value = value ? value : `<defaultAlias>`;
+    // if (!value) value = `<defaultAlias>`;
+    value = cleanAliasInput(value);
+    
     newValues = { ...newValues, ...{ [key]: value } }
   }
   const updatedValue = { ...currentValue, ...newValues };
 
+  //check if settings.json is dirty?
+  
   // vscode.ConfigurationTarget.Global = user settings.json
   await vscode.workspace.getConfiguration().update('command aliases', updatedValue, vscode.ConfigurationTarget.Global);
 
-  // if (missingAlias) {
-  //   vscode.window
-  //     .showInformationMessage(`Do you want to open your settings.json to add the missing aliases?  
-  //     You can't leave an alias as an empty string - it will generate an error message.`,
-  //       { modal: true },
-  //       ...['Open Settings'])   // two buttons: 'Open Settings' and 'Cancel' (which is auto-generated)
-  //     .then(selected => {
-  //   if (selected === 'Open Settings') vscode.commands.executeCommand('workbench.action.openSettingsJson');
-  //         //  .then() scroll to command aliases settings location, select missing alias
-  //       // else vscode.commands.executeCommand('leaveEditorMessage');
-  //     });
-  // }
+  // rejected promise not handled within 1 second: Error: Unable to write into user settings because the file is dirty.;
+  // Please save the user settings file first and then try again.
+}
+
+function cleanAliasInput(value) {
+  
+// strip leading and trailing whotespace/commas from complete list: "    A1, A2    "
+  if (value) value = value.replace(/^[,\s]*|[,\s]*$/gm, "");
+
+  // value may be a comma-separated list of aliases withn a string
+  // this will also strip leading and trailing whitespace from each alias: " A1  ,   A3   "
+  value = value.split(/\s*,\s*/);  // returns an array
+
+  value = value.filter((item) => item.length > 0); // for aliases that end up as empty strings: "A1,,,,A2"
+
+  value = value.length ? value : `<defaultAlias>`;  // if value is now an array with nothing in it, aall filtered out
+
+  // don't make an array for only one value : ['Alias1']
+  if (value.length === 1 && value !== '<defaultAlias>') value = value[0];
+
+  return value;
 }
     
 exports.activate = activate;

@@ -1,6 +1,12 @@
-// "configuration": {
-  //  "type": "object",
-  //  "title": "Set of command aliases",
-  //  "properties": {
-  //   "command aliases": {}
-  //  },
+  // if (missingAlias) {
+  //   vscode.window
+  //     .showInformationMessage(`Do you want to open your settings.json to add the missing aliases?  
+  //     You can't leave an alias as an empty string - it will generate an error message.`,
+  //       { modal: true },
+  //       ...['Open Settings'])   // two buttons: 'Open Settings' and 'Cancel' (which is auto-generated)
+  //     .then(selected => {
+  //   if (selected === 'Open Settings') vscode.commands.executeCommand('workbench.action.openSettingsJson');
+  //         //  .then() scroll to command aliases settings location, select missing alias
+  //       // else vscode.commands.executeCommand('leaveEditorMessage');
+  //     });
+  // }

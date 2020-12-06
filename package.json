@@ -2,7 +2,7 @@
  "name": "command-alias",
  "displayName": "Command Alias",
  "description": "Create aliases for built-in commands",
- "version": "0.3.1",
+ "version": "0.3.2",
  "publisher": "ArturoDent",
  "engines": {
   "vscode": "^1.51.0"
@@ -23,7 +23,9 @@
  ],
  "activationEvents": [
   "onStartupFinished",
-  "onCommand:command-alias.createAliases"
+  "onCommand:command-alias.createAliases",
+  "onCommand:command-alias.explorer.newFile.1",
+  "onCommand:command-alias.explorer.newFolder.1"
  ],
  "main": "./src/extension.js",
  "contributes": {
@@ -31,7 +33,17 @@
    {
     "command": "command-alias.createAliases",
     "title": "Create aliases from vscode's built-in commands",
-    "category": "Alias"
+    "category": "*Alias"
+   },
+   {
+    "command": "command-alias.explorer.newFile.1",
+    "title": "touch",
+    "category": "*Alias"
+   },
+   {
+    "command": "command-alias.explorer.newFolder.1",
+    "title": "mkdir",
+    "category": "*Alias"
    }
   ],
   "configuration": {
