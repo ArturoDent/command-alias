@@ -1,13 +1,17 @@
 # Command Aliases  
 
-  Create your own aliases for commands in vscode.  A command can have multiple aliases if you want.  The aliases are the command titles that show up in the Command Palette.  The built-in titles are not removed.  
+  Create your own aliases for commands in vscode.  A command can have multiple aliases if you want.  The aliases are the command titles/labels that show up in the Command Palette.  The built-in titles are not removed.  
   <br/>
 
 ## Requirements
 
-* Make sure your `settings.json` file is saved and not in a dirty state.  This extension cannot write into a dirty file.If you try to write to a dirty `settings.json` file through the `createAliases` command process, you will be prompted to save and your changes will be automatically saved.   
+* Make sure your `settings.json` file is saved and not in a dirty state prior to running the `createAliases` command.  This extension cannot write into a dirty file. If you try to write to a dirty `settings.json` file through the `createAliases` command process, you will be prompted to save and your changes will be automatically retried.   
 
-<img src="https://github.com/ArturoDent/command-alias/blob/master/images/dirtyFileMessage.jpg?raw=true" width="725" height="200" alt="reload message"/>
+<br/>
+
+<img src="https://github.com/ArturoDent/command-alias/blob/master/images/dirtyFileMessage.jpg?raw=true" width="850" height="400" alt="reload message"/>
+
+<br/><br/>  
 
 If you choose not to save your `settings.json` the changes will not be made.
 

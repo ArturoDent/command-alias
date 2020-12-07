@@ -53,19 +53,19 @@ async function activate(context) {
     // QuickPick returns an array of strings: 'commands'
     loadCommandQuickPick().then(async commands => {
 
-      if (!commands) return;  // user closed without selecting any
+      // !commands is undefined if QP closed by 'Escape` or focus out, if click 'OK' but no selections QP returns an empty array
+      if (!commands || !commands.length) return;  // user closed or no selection(s)
 
       let inputBoxOptions = {
         ignoreFocusOut: true
-        // placeHolder: `<enter your alias here>`,
       };
 
       let newCommands = {};
 
       for (const command of commands) {
 
-        inputBoxOptions.prompt = `Enter an alias for the command: ${ command } . . . . . `;
-        inputBoxOptions.placeHolder = `your alias for ${ command } here`;
+        // inputBoxOptions.prompt = `Enter an alias for the command: ${ command } . . . . . `;
+        inputBoxOptions.placeHolder = `Enter an alias(es) for the ${ command } here`;
 
         await vscode.window.showInputBox(inputBoxOptions)
           .then(alias => {
@@ -233,15 +233,15 @@ async function updateCommandAliasesSettings(newCommands) {
     }, reason => {
         if (reason.message === `Unable to write into user settings because the file is dirty. Please save the user settings file first and then try again.`) {
           vscode.window
-            .showInformationMessage(`Your settings.json file is dirty.  Please go there and save it and try again. 
-  Otherwise your attempted changes will not be made.
-  If you choose to "Open and Save Settings" we will try to make your alias changes.
+            .showInformationMessage(`Your settings.json file is dirty.  It must be saved first before your changes can be made. 
+  If you choose to "Save Settings" settings.json will be opened, saved and we will try to make your alias changes.
   
-  If you just "Open Settings" you will go there but your aliases changes will not be made.`,
+  If you just "Open Settings Only" you will go there but your aliases changes will not be made.`,
               { modal: true },
-              ...["Open and Save Settings", "Open Settings (but don't save)"])   // two buttons: 'Open Settings' and 'Cancel' (which is auto-generated)
+                 // three buttons: 'Save Settings', 'Open Settings Only' and 'Cancel' (which is auto-generated)
+              ...["Save Settings", "Open Settings Only"])
             .then(async selected => {
-              if (selected === "Open and Save Settings") {
+              if (selected === "Save Settings") {
 
                 await vscode.commands.executeCommand('workbench.action.openSettingsJson');
                 await vscode.window.activeTextEditor.document.save();
@@ -249,7 +249,7 @@ async function updateCommandAliasesSettings(newCommands) {
                 updateCommandAliasesSettings(newCommands);
               }
               
-              else if (selected === "Open Settings (but do not save)") {
+              else if (selected === "Open Settings Only") {
                 await vscode.commands.executeCommand('workbench.action.openSettingsJson');
               }
             });
