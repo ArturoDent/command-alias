@@ -1,27 +1,7 @@
 # Command Aliases  
 
-  Create your own aliases for commands in vscode.  A command can have multiple aliases if you want.  The aliases are the command titles/labels that show up in the Command Palette.  The built-in titles are not removed.  
+  Create your own aliases for commands in vscode.  A command can have multiple aliases if you want.  The aliases are the command titles/labels that show up in the Command Palette.  The built-in titles are not removed.
   <br/>
-
-## Requirements
-
-* Make sure your `settings.json` file is saved and not in a dirty state prior to running the `createAliases` command.  This extension cannot write into a dirty file. If you try to write to a dirty `settings.json` file through the `createAliases` command process, you will be prompted to save and your changes will be automatically retried.   
-
-<br/>
-
-<img src="https://github.com/ArturoDent/command-alias/blob/master/images/dirtyFileMessage.gif?raw=true" width="850" height="400" alt="reload message"/>
-
-<br/><br/>  
-
-If you choose not to save your `settings.json` the changes will not be made.
-
-* When you make a change to this extension's settings, you will need to (and will be prompted to) reload vscode.  This is the only way to have the new aliases appear in the Command Palette.  Or, of course, any changes will take affect the next time vscode is started.
-
-<br/>
-
-<img src="https://github.com/ArturoDent/command-alias/blob/master/images/reloadNotification.jpg?raw=true" width="725" height="200" alt="reload message"/>
-
-<br/>
 
 -------------------
 
@@ -76,9 +56,7 @@ General demo of the `command-alias.createAliases` process:
 * Note that if you edit the `command.category` in the Settings UI as shown above that vscode has a rather short debounce lag for typing entries into that field.  So vscode will update the setting before you may be finished typing the `category` entry - and that will cause this extension to warn you about reloading vscode.  You can ignore the `reload` message until you are done with the Settings UI.
 
 -----------
-
-
-----------------  
+-----------
 
 ### Settings  
 
@@ -142,14 +120,49 @@ If you had this in your settings:
 
 > The gif above uses a `commandAlias.category` set to the empty string so no category word is shown preceding the command.
 
+-----------  
+-----------  
 
------------
+## You can eliminate these aliases from vscode by deleting or commenting-out the settings - then reloading as prompted. 
+* You do not need to uninstall this extension to remove the aliases from the Command Palette.
+
+* Likewise for eliminating any single alias or command, just delete or comment that line in your `settings.json` and reload..
+
+
+-----------  
+-----------  
+
+## Requirements
+
+* Make sure your `settings.json` file is saved and not in a dirty state prior to running the `createAliases` command.  This extension cannot write into a dirty file. If you try to write to a dirty `settings.json` file through the `createAliases` command process, you will be prompted ( a modal prompt) to save and your changes will be automatically retried. 
+
+Demo using `createAliases` with a dirty - unsaved - `settings.json` file:    
+
+<br/>
+
+<img src="https://github.com/ArturoDent/command-alias/blob/master/images/dirtyFileMessage.gif?raw=true" width="850" height="500" alt="reload message"/>
+
+<br/><br/>  
+
+If you choose not to save your `settings.json` the changes will not be made.
+
+* When you make a change to this extension's settings, you will need to (and will be prompted to) reload vscode.  This is the only way to have the new aliases appear in the Command Palette.  If you are going to make more changes you can safely ignore the prompt.
+
+Or, of course, any changes will take affect the next time vscode is started.
+
+<br/>
+
+<img src="https://github.com/ArturoDent/command-alias/blob/master/images/reloadNotification.jpg?raw=true" width="725" height="200" alt="reload message"/>
+
+<br/>
+
+---------------
 
 ## Known Issues  
 
 * see `Requirements` above re: reload on changes.  
 
-* Don't use the same command in multiple places in the settings.  Vscode will flag as a JSON error.    
+* Don't use the same command in multiple places in the settings.  Vscode will flag as a JSON error: duplicate key.    
 
 * If there are multiple vscode windows open with this extension running, they will all get the notification prompt to reload when making a `command alias` setting change in any one window.  It has been my experience that it is sufficient to just reload the window where you made the settings changes.
 
