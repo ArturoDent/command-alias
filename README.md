@@ -5,9 +5,13 @@
 
 ## Requirements
 
-* Make sure your `settings.json` file is saved and not in a dirty state.  This extension cannot write into a dirty file = silent failure.
+* Make sure your `settings.json` file is saved and not in a dirty state.  This extension cannot write into a dirty file.If you try to write to a dirty `settings.json` file through the `createAliases` command process, you will be prompted to save and your changes will be automatically saved.   
 
-* When you make a change to these settings, you will need to (and will be prompted to) reload vscode.  This is the only way to have the new aliases appear in the Command Palette.  Or, of course, any changes will take affect the next time vscode is started.
+<img src="https://github.com/ArturoDent/command-alias/blob/master/images/dirtyFileMessage.jpg?raw=true" width="725" height="200" alt="reload message"/>
+
+If you choose not to save your `settings.json` the changes will not be made.
+
+* When you make a change to this extension's settings, you will need to (and will be prompted to) reload vscode.  This is the only way to have the new aliases appear in the Command Palette.  Or, of course, any changes will take affect the next time vscode is started.
 
 <br/>
 
@@ -36,7 +40,19 @@ If you do not supply an alias for a command a default value will be created: `<d
 }
 ```
 
-Identical aliases for different commands do work.  
+Identical aliases for different commands do work.
+
+------------
+
+You can create multiple aliases for any command either manually (as shown below in the **Settings** section using an array) or through the `createAliases` command process.  For each command you choose in the QuickPick an `input box` will open asking for your alias(es) for that command.
+
+If you want to enter multiple aliases for that command just emter a comma-separated list of those aliases, like:  
+
+`myAlias1, myAlias2, someOtherAlias`
+
+Leading and trailing whitespace will be removed from each alias entered, so ` Alias1    ,    Alias2  ` is the same as `Alias1,Alias2`.
+
+If you try to create an alias that is just an empty string, it will converted to a `<defaultAlias>` and will appear as that in your settings.  Also, empty strings will be removed from the input box if you try to enter something like `Alias1,,,Alias2`.  That will be converted to `A1ias1,Alias2`.  
 
 It is necessary to create these default alias entries because vscode **requires** all commands to have these labels/titles - there would be nothing to display in the Command Palette otherwise.  If you **manually** create an entry without an alias you will see this error message from vscode on trying to reload:
 
@@ -139,12 +155,14 @@ If you had this in your settings:
 * 0.1.0 &emsp;  Initial release.
 * 0.1.2 &emsp;  Fixed: notification only appears if change 'command-alias' setting.
 * 0.2.1 &emsp;  Worked on reload not updating properly on a `category` change. 
-* 0.3.0 &emsp;  Added the `createAliases` QuickPick process for automating the generation of settings.   
+* 0.3.0 &emsp;  Added the `createAliases` QuickPick process for automating the generation of settings.
+* 0.4.0 &emsp;  Catch error: writing to dirty settings and prompt, save and retry.  
+&emsp;&emsp; &emsp; Added ability to add multiple aliases through the `createAliases` InputBox.
 
 ### TODO
 
 [ X ]     - Add a QuickPick panel of commands from which to select and add to `command aliases` settings.  
-[&emsp; ] - Make the QuickPick panel take an a comma-separated list of aliases for each command.   
+[ X ] - Make the QuickPick panel take an a comma-separated list of aliases for each command.   
 [&emsp; ] - Investigate the ability to specify any number of `categories` and assign to different commands.  
 
 

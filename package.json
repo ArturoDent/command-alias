@@ -2,7 +2,7 @@
  "name": "command-alias",
  "displayName": "Command Alias",
  "description": "Create aliases for built-in commands",
- "version": "0.3.2",
+ "version": "0.3.5",
  "publisher": "ArturoDent",
  "engines": {
   "vscode": "^1.51.0"

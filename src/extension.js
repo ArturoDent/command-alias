@@ -225,13 +225,42 @@ async function updateCommandAliasesSettings(newCommands) {
   }
   const updatedValue = { ...currentValue, ...newValues };
 
-  //check if settings.json is dirty?
-  
   // vscode.ConfigurationTarget.Global = user settings.json
-  await vscode.workspace.getConfiguration().update('command aliases', updatedValue, vscode.ConfigurationTarget.Global);
 
-  // rejected promise not handled within 1 second: Error: Unable to write into user settings because the file is dirty.;
-  // Please save the user settings file first and then try again.
+  await vscode.workspace.getConfiguration().update('command aliases', updatedValue, vscode.ConfigurationTarget.Global)
+    .then(() => {
+      // fulfillment
+    }, reason => {
+        if (reason.message === `Unable to write into user settings because the file is dirty. Please save the user settings file first and then try again.`) {
+          vscode.window
+            .showInformationMessage(`Your settings.json file is dirty.  Please go there and save it and try again. 
+  Otherwise your attempted changes will not be made.
+  If you choose to "Open and Save Settings" we will try to make your alias changes.
+  
+  If you just "Open Settings" you will go there but your aliases changes will not be made.`,
+              { modal: true },
+              ...["Open and Save Settings", "Open Settings (but don't save)"])   // two buttons: 'Open Settings' and 'Cancel' (which is auto-generated)
+            .then(async selected => {
+              if (selected === "Open and Save Settings") {
+
+                await vscode.commands.executeCommand('workbench.action.openSettingsJson');
+                await vscode.window.activeTextEditor.document.save();
+                // try again
+                updateCommandAliasesSettings(newCommands);
+              }
+              
+              else if (selected === "Open Settings (but do not save)") {
+                await vscode.commands.executeCommand('workbench.action.openSettingsJson');
+              }
+            });
+        }
+    });
+
+  // {
+  //   name: "Error",
+  //   message: "Unable to write into user settings because the file is dirty. 
+  //             Please save the user settings file first and then try again.",
+  // }
 }
 
 function cleanAliasInput(value) {
