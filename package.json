@@ -24,7 +24,8 @@
  "activationEvents": [
   "onStartupFinished",
   "onCommand:command-alias.createAliases",
-  "onCommand:command-alias.explorer.newFile.1"
+  "onCommand:command-alias.explorer.newFile.1",
+  "onCommand:command-alias.explorer.newFolder.1"
  ],
  "main": "./src/extension.js",
  "contributes": {
@@ -37,6 +38,11 @@
    {
     "command": "command-alias.explorer.newFile.1",
     "title": "touch",
+    "category": "*Alias"
+   },
+   {
+    "command": "command-alias.explorer.newFolder.1",
+    "title": "mkdir",
     "category": "*Alias"
    }
   ],

@@ -9,7 +9,7 @@
 
 <br/>
 
-<img src="https://github.com/ArturoDent/command-alias/blob/master/images/dirtyFileMessage.jpg?raw=true" width="850" height="400" alt="reload message"/>
+<img src="https://github.com/ArturoDent/command-alias/blob/master/images/dirtyFileMessage.gif?raw=true" width="850" height="400" alt="reload message"/>
 
 <br/><br/>  
 
