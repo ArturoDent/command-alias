@@ -7,14 +7,10 @@ const packageJSON = require('./packageJSON.js');
 
 let disposables = [];
 
-
 /**
  * @param {vscode.ExtensionContext} context
  */
 async function activate(context) {
-
-  // remove?
-  // let thisExtension = vscode.extensions.getExtension('ArturoDent.command-alias');
 
   let disposable;
 
@@ -27,11 +23,12 @@ async function activate(context) {
 
   // if this extension's 'command aliases' settings are changed, reload the commands
   // notify user of the need to reload vscode
+
+  // disposable = vscode.workspace.onDidChangeConfiguration(async (event) => {
   context.subscriptions.push(vscode.workspace.onDidChangeConfiguration(async (event) => {
 
-    // if (event.affectsConfiguration('command aliases')) {
     if (event.affectsConfiguration('command aliases') || event.affectsConfiguration('commandAlias')) {
-      
+
       let category = settingsJS.getCategorySetting();
       await loadCommands(context, category);  // reload commands with their aliases
 
@@ -45,6 +42,7 @@ async function activate(context) {
     }
   }));
 
+  // get rid of these *** TODO
   context.subscriptions.push(disposable);
   disposables.push(disposable);
 
@@ -87,12 +85,12 @@ async function activate(context) {
  * @description - load this extension's settings, make commands and activation events from them
  * @description - if different than existing package.json, write the new commands/events to package.json
  * @description - and vscode.commands.registerCommands() all commands whether new or old
- * 
+ *
  * @param {*} context - the extension.context
  * @param {String} category - like 'Alias', the default, in 'Alias:mkdir' in the command palette
  */
-async function loadCommands(context,category) {
-  
+async function loadCommands(context, category) {
+
   let thisExtension = vscode.extensions.getExtension('ArturoDent.command-alias');
   let disposable;
 
@@ -101,10 +99,10 @@ async function loadCommands(context,category) {
   let packageEvents;
   let settingsEvents;
 
-  const currentSettings = settingsJS.getCurrentSettings();
+	const currentSettings = settingsJS.getCurrentSettings();
 
   if (currentSettings) {
-     
+
     packageCommands = packageJSON.getPackageJSONCommands();
     settingsPackageCommands = settingsJS.makePackageCommandsFromSettings(currentSettings, category);
 
@@ -114,7 +112,7 @@ async function loadCommands(context,category) {
 
     if (!commandArraysAreEquivalent(settingsPackageCommands, packageCommands) ||
         !activationEventArraysAreEquivalent(settingsEvents, packageEvents)) {
-      
+
       thisExtension.packageJSON.contributes.commands = settingsPackageCommands;
       thisExtension.packageJSON.activationEvents = settingsEvents;
 
@@ -126,22 +124,34 @@ async function loadCommands(context,category) {
     //   "command": "command-alias.editor.action.copyLinesDownAction.1",
     //   "title": "Shimmy"
     //  },
-  
-  const allCommands = await vscode.commands.getCommands(true);
 
-  
-  for (const pcommand of packageCommands) {
+	const allCommands = await vscode.commands.getCommands(true);
 
-    // skip already regisitered commands
+	for (const pcommand of packageCommands) {
+
+		let args = {};
+
+    // skip already registered commands
+		// remove args if any (delete command.args) because args is not a property of commands
+
+		if (pcommand.args) {
+			args = pcommand.args;
+			delete pcommand.args;
+		}
+
     if (allCommands.includes(pcommand.command)) continue;
 
     if (pcommand.command !== 'command-alias.createAliases') {
 
-      let makeCommand = pcommand.command.replace(/^command-alias\./m, '').replace(/\.\d+$/m, '');
+			let makeCommand = pcommand.command.replace(/^command-alias\./m, '').replace(/\.\d+$/m, '');
 
       // rejected promise: Error: command 'someCommand' already exists fixed with includes() check above
-      disposable = vscode.commands.registerCommand(pcommand.command, function () {
-        vscode.commands.executeCommand(makeCommand);
+			disposable = vscode.commands.registerCommand(pcommand.command, function () {
+				// if (args) {
+				// 	vscode.commands.executeCommand(makeCommand, args);
+				// }
+				// else vscode.commands.executeCommand(makeCommand);
+				vscode.commands.executeCommand(makeCommand, args);
       });
       context.subscriptions.push(disposable);
       disposables.push(disposable);
@@ -149,19 +159,27 @@ async function loadCommands(context,category) {
   };
 }
 
+
+function _commandHandler() {
+
+	// vscode.commands.executeCommand('workbench.action.terminal.sendSequence',  {"text": "echo 11111" });
+	return  {"text": "echo 11111" };
+};
+
+
 /**
  * @description - are the settings and package.json commands the same?
- * 
+ *
  * @param {Array} settings - commands constructed from the settings.json 'command aliases'
  * @param {Array} packages - the pre-existing commands from package.json
  * @returns {boolean}
  */
 function commandArraysAreEquivalent(settings, packages) {
-  
+
   if (settings.length !== packages.length) return false;
 
   return settings.every(setting => packages.some(pcommand => {
-    return (pcommand.command === setting.command) && (pcommand.title === setting.title) && 
+    return (pcommand.command === setting.command) && (pcommand.title === setting.title) &&
     (pcommand.category === setting.category);
   }));
 }
@@ -169,7 +187,7 @@ function commandArraysAreEquivalent(settings, packages) {
 
 /**
  * @description - are the settings and package.json activationEvents the same?
- * 
+ *
  * @param {Array} settings - activationEvents constructed from the settings.json 'command aliases'
  * @param {Array} packages - the pre-existing activationEvents from package.json
  * @returns {boolean}
@@ -188,10 +206,10 @@ function activationEventArraysAreEquivalent(settings, packages) {
 
 /**
  * @description - open a QuickPick of all available commands
- * @returns - the QuickPick 
+ * @returns - the QuickPick
  */
 function loadCommandQuickPick() {
-  
+
   // populate a QuickPick with all commands; true = no internal commands
   let commands = vscode.commands.getCommands(true);
 
@@ -203,15 +221,16 @@ function loadCommandQuickPick() {
 
 /**
  * @description - add new items (with a <defaultAlias> if necessary) to user settings
- * 
+ *
  * @param {Object} newCommands - commands: aliases as selected in the QuickPick
  */
 async function updateCommandAliasesSettings(newCommands) {
-  
+
   // the {} at the end is a default value to return if no value is found
   const currentValue = vscode.workspace.getConfiguration().get('command aliases', {});
+
   let newValues = {};
-  
+
   // newCommands = { history.showPrevious: "Alias1", history.showNext: "Alias2" }
   // newCommands = { history.showNext: "Alias2, Alias3, Alias4" }
 
@@ -220,7 +239,7 @@ async function updateCommandAliasesSettings(newCommands) {
     // // value = value ? value : `<defaultAlias>`;
     // if (!value) value = `<defaultAlias>`;
     value = cleanAliasInput(value);
-    
+
     newValues = { ...newValues, ...{ [key]: value } }
   }
   const updatedValue = { ...currentValue, ...newValues };
@@ -233,10 +252,11 @@ async function updateCommandAliasesSettings(newCommands) {
     }, reason => {
         if (reason.message === `Unable to write into user settings because the file is dirty. Please save the user settings file first and then try again.`) {
           vscode.window
-            .showInformationMessage(`Your settings.json file is dirty.  It must be saved first before your changes can be made. 
-  If you choose to "Save Settings" settings.json will be opened, saved and we will try to make your alias changes.
-  
-  If you just "Open Settings Only" you will go there but your aliases changes will not be made.`,
+            .showInformationMessage(`Your settings.json file is dirty.  It must be saved before your changes can be made.
+
+  "Save Settings": settings.json will be opened, saved and we will try to make your alias changes.
+
+  "Open Settings Only": you will go there but your aliases changes will not be made.`,
               { modal: true },
                  // three buttons: 'Save Settings', 'Open Settings Only' and 'Cancel' (which is auto-generated)
               ...["Save Settings", "Open Settings Only"])
@@ -248,7 +268,7 @@ async function updateCommandAliasesSettings(newCommands) {
                 // try again
                 updateCommandAliasesSettings(newCommands);
               }
-              
+
               else if (selected === "Open Settings Only") {
                 await vscode.commands.executeCommand('workbench.action.openSettingsJson');
               }
@@ -258,14 +278,14 @@ async function updateCommandAliasesSettings(newCommands) {
 
   // {
   //   name: "Error",
-  //   message: "Unable to write into user settings because the file is dirty. 
+  //   message: "Unable to write into user settings because the file is dirty.
   //             Please save the user settings file first and then try again.",
   // }
 }
 
 function cleanAliasInput(value) {
-  
-// strip leading and trailing whotespace/commas from complete list: "    A1, A2    "
+
+// strip leading and trailing whitespace/commas from complete list: "    A1, A2    "
   if (value) value = value.replace(/^[,\s]*|[,\s]*$/gm, "");
 
   // value may be a comma-separated list of aliases withn a string
@@ -281,12 +301,18 @@ function cleanAliasInput(value) {
 
   return value;
 }
-    
+
 exports.activate = activate;
 
+// eslint-disable-next-line no-unused-vars
 function deactivate() {}
 
-module.exports = {
-	activate,
-	deactivate
-}
+
+// module.exports = {
+// 	activate,
+// 	deactivate
+// }
+
+// CN= sdfsdf
+
+

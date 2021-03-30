@@ -1,6 +1,9 @@
 # Command Aliases  
 
-  Create your own aliases for commands in vscode.  A command can have multiple aliases if you want.  The aliases are the command titles/labels that show up in the Command Palette.  The built-in titles are not removed.
+Create your own aliases for commands in vscode.  A command can have multiple aliases if you want.  The aliases are the command titles/labels that show up in the Command Palette.  The built-in titles are not removed.  
+
+With v0.5.0 you can create aliases for the `workbench.action.terminal.sendSequence` command, each with different arguments.  See below for an example.   
+
   <br/>
 
 -------------------
@@ -60,9 +63,14 @@ General demo of the `command-alias.createAliases` process:
 
 ### Settings  
 
-This extension contributes the following settings group:
+This extension contributes the following settings:
+  
+1.  `command aliases`  
+2.  `commandAlias.category`
 
-* `command aliases`: a group of commands and their titles or aliases.  You choose a command and add an alias to it.  Example in `settings.json` (user settings): 
+------
+
+1.  **`command aliases`** : are a group of commands and their titles or aliases.  You choose a command and add an alias to it.  Example in `settings.json` (user settings): 
 
 ```jsonc
   "command aliases": {
@@ -81,13 +89,13 @@ Commands are then generated from these settings either on load of the extension 
 
 <br/>
 
-This extension also contributes the following setting:
+-----
 
-* `commandAlias.category`: the 'category' is text that precedes your command aliases in the Command Palette, like the word `Debug` in `Debug: Clear Console`.  
+2.  **`commandAlias.category`**: the 'category' is text that precedes your command aliases in the Command Palette, like the word `Debug` in `Debug: Clear Console`.  
 
 The default category is `Alias` so that your commands may appear as `Alias: mkdir` or `Alias: touch` for example.  Youy can change that preceding word to an empty string or to another word in the UI Settings or in your own `settings.json` manually.
 
-Examples in `settings.json` (user settings): 
+Examples of different `categories` as shown in the Command Palette: 
 
 <img src="https://github.com/ArturoDent/command-alias/blob/master/images/AliasDemoWithhAlias.gif?raw=true" width="725" height="600" alt="Custom category demo"/>
 
@@ -121,12 +129,31 @@ If you had this in your settings:
 > The gif above uses a `commandAlias.category` set to the empty string so no category word is shown preceding the command.
 
 -----------  
------------  
+-----------   
 
-## You can eliminate these aliases from vscode by deleting or commenting-out the settings - then reloading as prompted. 
+** Using the command `workbench.action.terminal.sendSequence`.  If you frequently use this command to send text to the terminal, you can set up aliases so they wil show up in the Command Palette.  [`\u000d` is unicode for a `return` so the terminal command runs immediately, it is up to you whether you want that.]  
+
+```jsonc
+"command aliases": {
+	"explorer.newFile": ["touch","touch2"],
+	"explorer.newFolder": "mkdir",
+	"git.checkout": "Git: Switch to...",
+	"workbench.action.terminal.sendSequence": [
+		{"open styles": "code -r '../style.scss'\u000d"},
+		{"change terminal directory": "cd '${fileDirname}'\u000d"}     // change terminal directory to current file's dirname
+	]
+}
+```
+
+<img src="https://github.com/ArturoDent/command-alias/blob/master/images/sendSequenceDemo.gif?raw=true" width="725" height="350" alt="command palette sendSequence commands demo"/>  
+
+<br/>  
+<br/>  
+
+### You can eliminate these aliases from vscode by deleting or commenting-out the settings - then reloading as prompted. 
 * You do not need to uninstall this extension to remove the aliases from the Command Palette.
 
-* Likewise for eliminating any single alias or command, just delete or comment that line in your `settings.json` and reload..
+* Likewise for eliminating any single alias or command, just delete or comment that line in your `settings.json` and reload.
 
 
 -----------  
@@ -144,7 +171,10 @@ Demo using `createAliases` with a dirty - unsaved - `settings.json` file:
 
 <br/><br/>  
 
-If you choose not to save your `settings.json` the changes will not be made.
+If you choose not to save your `settings.json` the changes will not be made.  
+<br/>
+
+-----------
 
 * When you make a change to this extension's settings, you will need to (and will be prompted to) reload vscode.  This is the only way to have the new aliases appear in the Command Palette.  If you are going to make more changes you can safely ignore the prompt.
 
@@ -175,11 +205,11 @@ Or, of course, any changes will take affect the next time vscode is started.
 * 0.3.0 &emsp;  Added the `createAliases` QuickPick process for automating the generation of settings.
 * 0.4.0 &emsp;  Catch error: writing to dirty settings and prompt, save and retry.  
 &emsp;&emsp; &emsp; Added ability to add multiple aliases through the `createAliases` InputBox.
+* 0.5.0 &emsp;  Added support for multiple `workbench.action.terminal.sendSequence` command with args.  
 
 ### TODO
 
-[ X ]     - Add a QuickPick panel of commands from which to select and add to `command aliases` settings.  
-[ X ] - Make the QuickPick panel take an a comma-separated list of aliases for each command.   
+[&emsp; ] - Investigate the ability to use command titles as command names in keybindings.     
 [&emsp; ] - Investigate the ability to specify any number of `categories` and assign to different commands.  
 
 

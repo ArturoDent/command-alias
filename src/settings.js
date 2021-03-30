@@ -2,39 +2,36 @@ const vscode = require('vscode');
 
 
 /**
- * @description - get the settings for 'command aliases'
- * 
- * @returns - an array of settings.json entries for this extension
+ * Get the settings for 'command aliases' *
+ * @returns {Array}- an array of settings.json entries for this extension
  */
-exports.getCurrentSettings = function () {  
+exports.getCurrentSettings = function () {
 
   let currentSettings = vscode.workspace.getConfiguration('command aliases');
   let commandArray = Object.entries(currentSettings);
   commandArray = commandArray.filter(current => (typeof current[1] === 'string') || (Array.isArray(current[1])));
-  
+
   return commandArray;
 };
 
 /**
- * @description - get the 
- * 
- * @returns - a string
+ * Get the Command Palette 'category'
+ * @returns {String}
  */
-exports.getCategorySetting = function () {  
-
-  return vscode.workspace.getConfiguration('commandAlias').get('category');  
+exports.getCategorySetting = function () {
+  return vscode.workspace.getConfiguration('commandAlias').get('category');
 };
 
 
 /**
- * @description - transform the settings into package.json- style commands {command: "", title: ""}
- * 
- * @param {object} settings - this extension's settings from getCurrentSettings()
+ * Transform the settings into package.json- style commands {command: "", title: ""}
+ *
+ * @param {Object} settings - this extension's settings from getCurrentSettings()
  * @param {String} userCategory - the category of the command in the command palette
  * @returns - package.json form of 'contributes.commands'
  */
 exports.makePackageCommandsFromSettings = function (settings, userCategory) {
-  
+
   let settingsJSON = [];
 
   let newCommand = {};
@@ -43,17 +40,48 @@ exports.makePackageCommandsFromSettings = function (settings, userCategory) {
   newCommand.category = userCategory;
 
   settingsJSON.push(newCommand);
-  let numAlias;
+	let numAlias;
 
-  for (const setting of settings) {
-  
-    if (Array.isArray(setting[1])) {
+  // {
+  //   "explorer.newFile": ["touch","touch2"],
+  //   "explorer.newFolder": "mkdir",
+  //   "git.checkout": "Git: Switch to...",
+	// 		"workbench.action.terminal.sendSequence": [
+  //    	{"pandoc1": "echo ${file} 1"},
+  //    	{"pandoc2": "echo ${file} 2"}
+  //   ]
+  // };
+
+	//   "command": "workbench.action.terminal.sendSequence",
+  //   "args": {
+  //     "text": "awk -f '${file}'\u000D",
+  //   }
+
+	for (const setting of settings) {
+
+		if (Array.isArray(setting[1]) && (typeof setting[1][0] === "object")) {
       numAlias = 1;
-    
-      for (const alias of setting[1]) {
+
+      for (const item of setting[1]) {
         let newCommand = {};
         newCommand.command = `command-alias.${ setting[0] }.${ numAlias++ }`;
-        newCommand.title = alias;
+        newCommand.title = Object.keys(item)[0];
+				newCommand.category = userCategory;
+				const args = {
+					text: `${Object.values(item)[0]}`
+				};
+				newCommand.args = args;
+        settingsJSON.push(newCommand);
+      }
+    }
+
+    else if (Array.isArray(setting[1])) {
+      numAlias = 1;
+
+      for (const item of setting[1]) {
+        let newCommand = {};
+        newCommand.command = `command-alias.${ setting[0] }.${ numAlias++ }`;
+        newCommand.title = item;
         newCommand.category = userCategory;
         settingsJSON.push(newCommand);
       }
@@ -73,19 +101,19 @@ exports.makePackageCommandsFromSettings = function (settings, userCategory) {
 
 
 /**
- * @description - transform the settings (already transformed to package.json-style commands)
- * @description - into package.json 'activationEvents' : 'onCommand:<some command>'
- * 
- * @param {object} settingsCommands - 
- * @returns - an array of strings for package.json activationEvents
+ * Transform the settings (already transformed to package.json-style commands)
+ * into package.json 'activationEvents' : 'onCommand:<some command>'
+ *
+ * @param {Object} settingsCommands -
+ * @returns {Array<String>} - an array of strings for package.json activationEvents
  */
 exports.makeSettingsEventsFromSettingsPackageCommands = function (settingsCommands) {
 
   // "activationEvents": [
-  //   "onStartupFinished",
-  //   "onCommand:command-alias.createAliases",
-  //   "onCommand:command-alias.editor.action.clipboardCutAction",
-  //   "onCommand:command-alias.editor.action.clipboardPasteAction"
+    // "onStartupFinished",
+    // "onCommand:command-alias.createAliases",
+    // "onCommand:command-alias.editor.action.clipboardCutAction",
+    // "onCommand:command-alias.editor.action.clipboardPasteAction"
   // ],
 
   let settingsJSON = [];

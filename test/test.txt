@@ -1,0 +1,16 @@
+               	// in a javascript file
+
+[PSCustomObject] @{ Key = Value }]  // [psc] insert/enter 
+[PSCustomObject] @{ Key = Value }   // [psc] replace/shift+enter
+
+[PSCustomObject] @{ Key = Value }   // psc insert/enter
+[PSCustomObject] @{ Key = Value }   // psc replace/shift+enter
+
+
+				// in a json file
+				
+[PSCustomObject] @{ Key = Value }   // [psc] replace/enter
+[PSCustomObject] @{ Key = Value }]  // [psc] insert/shift+enter
+
+[PSCustomObject] @{ Key = Value }   // psc replace/enter
+[PSCustomObject] @{ Key = Value }   // psc insert/shift+enter
