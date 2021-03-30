@@ -43,7 +43,7 @@ If you try to create an alias that is just an empty string, it will converted to
 
 It is necessary to create these default alias entries because vscode **requires** all commands to have these labels/titles - there would be nothing to display in the Command Palette otherwise.  If you **manually** create an entry without an alias you will see this error message from vscode on trying to reload:
 
-<img src="https://github.com/ArturoDent/command-alias/blob/master/images/ErrorMessageNoTitle.jpg?raw=true" width="900" height="200" alt="no title error message"/>
+&emsp;&emsp; <img src="https://github.com/ArturoDent/command-alias/blob/master/images/ErrorMessageNoTitle.jpg?raw=true" width="800" height="175" alt="no title error message"/>
 
 -------------
 <br/>
@@ -52,7 +52,7 @@ General demo of the `command-alias.createAliases` process:
 
 <br/>
 
-<img src="https://github.com/ArturoDent/command-alias/blob/master/images/fullDemo.gif?raw=true" width="725" height="600" alt="createAliases command demo"/>  
+&emsp;&emsp; <img src="https://github.com/ArturoDent/command-alias/blob/master/images/fullDemo.gif?raw=true" width="900" height="600" alt="createAliases command demo"/>  
 
 <br/>
 
@@ -97,11 +97,11 @@ The default category is `Alias` so that your commands may appear as `Alias: mkdi
 
 Examples of different `categories` as shown in the Command Palette: 
 
-<img src="https://github.com/ArturoDent/command-alias/blob/master/images/AliasDemoWithhAlias.gif?raw=true" width="725" height="600" alt="Custom category demo"/>
+&emsp;&emsp; <img src="https://github.com/ArturoDent/command-alias/blob/master/images/AliasDemoWithhAlias.gif?raw=true" width="700" height="450" alt="Custom category demo"/>
 
-<br/><br/>
+<br/> <br/>
 
-<img src="https://github.com/ArturoDent/command-alias/blob/master/images/AliasDemoEmptyString.gif?raw=true" width="725" height="600" alt="empty string category demo"/>
+&emsp;&emsp; <img src="https://github.com/ArturoDent/command-alias/blob/master/images/AliasDemoEmptyString.gif?raw=true" width="700" height="450" alt="empty string category demo"/>
 
 <br/>
 
@@ -122,7 +122,7 @@ If you had this in your settings:
 
   <br/>
 
-<img src="https://github.com/ArturoDent/command-alias/blob/master/images/commandPaletteWithDuplicateAliasess.gif?raw=true" width="725" height="350" alt="duplicate aliases in the commnad palette demo"/>
+&emsp;&emsp; <img src="https://github.com/ArturoDent/command-alias/blob/master/images/commandPaletteWithDuplicateAliasess.gif?raw=true" width="500" height="275" alt="duplicate aliases in the commnad palette demo"/>
 
 <br/>
 
@@ -145,12 +145,12 @@ If you had this in your settings:
 }
 ```
 
-<img src="https://github.com/ArturoDent/command-alias/blob/master/images/sendSequenceDemo.gif?raw=true" width="725" height="350" alt="command palette sendSequence commands demo"/>  
+&emsp;&emsp; <img src="https://github.com/ArturoDent/command-alias/blob/master/images/sendSequenceDemo.gif?raw=true" width="900" height="500" alt="command palette sendSequence commands demo"/>  
 
 <br/>  
 <br/>  
 
-### You can eliminate these aliases from vscode by deleting or commenting-out the settings - then reloading as prompted. 
+### You can eliminate any aliases from vscode by deleting or commenting-out the settings - then reloading as prompted. 
 * You do not need to uninstall this extension to remove the aliases from the Command Palette.
 
 * Likewise for eliminating any single alias or command, just delete or comment that line in your `settings.json` and reload.
@@ -167,7 +167,7 @@ Demo using `createAliases` with a dirty - unsaved - `settings.json` file:
 
 <br/>
 
-<img src="https://github.com/ArturoDent/command-alias/blob/master/images/dirtyFileMessage.gif?raw=true" width="850" height="500" alt="reload message"/>
+&emsp;&emsp; <img src="https://github.com/ArturoDent/command-alias/blob/master/images/dirtyFileMessage.gif?raw=true" width="850" height="500" alt="reload message"/>
 
 <br/><br/>  
 
@@ -182,7 +182,7 @@ Or, of course, any changes will take affect the next time vscode is started.
 
 <br/>
 
-<img src="https://github.com/ArturoDent/command-alias/blob/master/images/reloadNotification.jpg?raw=true" width="725" height="200" alt="reload message"/>
+<img src="https://github.com/ArturoDent/command-alias/blob/master/images/reloadNotification.jpg?raw=true" width="525" height="150" alt="reload message"/>
 
 <br/>
 
@@ -207,10 +207,11 @@ Or, of course, any changes will take affect the next time vscode is started.
 &emsp;&emsp; &emsp; Added ability to add multiple aliases through the `createAliases` InputBox.
 * 0.5.0 &emsp;  Added support for multiple `workbench.action.terminal.sendSequence` command with args.  
 
+
 ### TODO
 
-[&emsp; ] - Investigate the ability to use command titles as command names in keybindings.     
-[&emsp; ] - Investigate the ability to specify any number of `categories` and assign to different commands.  
+[&emsp; ] - Explore the ability to use command titles as command names in keybindings.     
+[&emsp; ] - Explore the ability to specify any number of `categories` and assign to different commands.  
 
 
 -----------------------------------------------------------------------------------------------------------

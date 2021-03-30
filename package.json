@@ -2,7 +2,7 @@
  "name": "command-alias",
  "displayName": "Command Alias",
  "description": "Create aliases for built-in commands",
- "version": "0.4.0",
+ "version": "0.5.0",
  "publisher": "ArturoDent",
  "engines": {
   "vscode": "^1.51.0"
@@ -23,13 +23,7 @@
  ],
  "activationEvents": [
   "onStartupFinished",
-  "onCommand:command-alias.createAliases",
-  "onCommand:command-alias.explorer.newFile.1",
-  "onCommand:command-alias.explorer.newFile.2",
-  "onCommand:command-alias.explorer.newFolder.1",
-  "onCommand:command-alias.git.checkout.1",
-  "onCommand:command-alias.workbench.action.terminal.sendSequence.1",
-  "onCommand:command-alias.workbench.action.terminal.sendSequence.2"
+  "onCommand:command-alias.createAliases"
  ],
  "main": "./src/extension.js",
  "contributes": {
@@ -38,42 +32,6 @@
     "command": "command-alias.createAliases",
     "title": "Create aliases from vscode's built-in commands",
     "category": "Alias"
-   },
-   {
-    "command": "command-alias.explorer.newFile.1",
-    "title": "touch",
-    "category": "Alias"
-   },
-   {
-    "command": "command-alias.explorer.newFile.2",
-    "title": "touch2",
-    "category": "Alias"
-   },
-   {
-    "command": "command-alias.explorer.newFolder.1",
-    "title": "mkdir",
-    "category": "Alias"
-   },
-   {
-    "command": "command-alias.git.checkout.1",
-    "title": "Git: Switch to...",
-    "category": "Alias"
-   },
-   {
-    "command": "command-alias.workbench.action.terminal.sendSequence.1",
-    "title": "open styles",
-    "category": "Alias",
-    "args": {
-     "text": "code -r '../style.scss'\r"
-    }
-   },
-   {
-    "command": "command-alias.workbench.action.terminal.sendSequence.2",
-    "title": "change terminal directory",
-    "category": "Alias",
-    "args": {
-     "text": "cd '${fileDirname}'\r"
-    }
    }
   ],
   "configuration": {
