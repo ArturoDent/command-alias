@@ -23,7 +23,14 @@
  ],
  "activationEvents": [
   "onStartupFinished",
-  "onCommand:command-alias.createAliases"
+  "onCommand:command-alias.createAliases",
+  "onCommand:touch",
+  "onCommand:mkdir",
+  "onCommand:new_directory",
+  "onCommand:Git:_Switch_to...",
+  "onCommand:Brackets:_Select_Between",
+  "onCommand:Run_Last_Terminal_Command",
+  "onCommand:Set_Terminal_to_Current_File_Folder"
  ],
  "main": "./src/extension.js",
  "contributes": {
@@ -32,6 +39,54 @@
     "command": "command-alias.createAliases",
     "title": "Create aliases from vscode's built-in commands",
     "category": "Alias"
+   },
+   {
+    "command": "touch",
+    "run": "explorer.newFile",
+    "title": "touch",
+    "category": "Alias"
+   },
+   {
+    "command": "mkdir",
+    "run": "explorer.newFolder",
+    "title": "mkdir",
+    "category": "Alias"
+   },
+   {
+    "command": "new_directory",
+    "run": "explorer.newFolder",
+    "title": "new directory",
+    "category": "Alias"
+   },
+   {
+    "command": "Git:_Switch_to...",
+    "run": "git.checkout",
+    "title": "Git: Switch to...",
+    "category": "Alias"
+   },
+   {
+    "command": "Brackets:_Select_Between",
+    "run": "editor.action.selectToBracket",
+    "title": "Brackets: Select Between",
+    "category": "Alias"
+   },
+   {
+    "command": "Run_Last_Terminal_Command",
+    "run": "workbench.action.terminal.sendSequence",
+    "title": "Run Last Terminal Command",
+    "category": "Alias",
+    "args": {
+     "text": "\u001b[A\r"
+    }
+   },
+   {
+    "command": "Set_Terminal_to_Current_File_Folder",
+    "run": "workbench.action.terminal.sendSequence",
+    "title": "Set Terminal to Current File Folder",
+    "category": "Alias",
+    "args": {
+     "text": "cd '${fileDirname}'\r"
+    }
    }
   ],
   "configuration": {

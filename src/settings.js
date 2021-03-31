@@ -58,10 +58,21 @@ exports.makePackageCommandsFromSettings = function (settings, userCategory) {
 
       for (const item of setting[1]) {
         let newCommand = {};
+<<<<<<< HEAD
+=======
+        // newCommand.command = `command-alias.${ setting[0] }.${ numAlias++ }`;
+>>>>>>> 818dfe0e6bd75f0d065c31571fdebe83e6998878
 				newCommand.command = Object.keys(item)[0].replace(/\s+/g, "_");
 				newCommand.run = setting[0];
         newCommand.title = Object.keys(item)[0];
 				newCommand.category = userCategory;
+<<<<<<< HEAD
+=======
+				// const args = {
+				// 	text: `${Object.values(item)[0]}`
+				// };
+				// const args = Object.values(item)[0];
+>>>>>>> 818dfe0e6bd75f0d065c31571fdebe83e6998878
 				newCommand.args = Object.values(item)[0];
         settingsJSON.push(newCommand);
       }
@@ -71,6 +82,10 @@ exports.makePackageCommandsFromSettings = function (settings, userCategory) {
 
       for (const item of setting[1]) {
         let newCommand = {};
+<<<<<<< HEAD
+=======
+        // newCommand.command = `command-alias.${ setting[0] }.${ numAlias++ }`;
+>>>>>>> 818dfe0e6bd75f0d065c31571fdebe83e6998878
 				newCommand.command = item.replace(/\s+/g, "_");
 				newCommand.run = setting[0];
         newCommand.title = item;
@@ -80,6 +95,10 @@ exports.makePackageCommandsFromSettings = function (settings, userCategory) {
     }
     else {
       let newCommand = {};
+<<<<<<< HEAD
+=======
+      // newCommand.command = `command-alias.${ setting[0] }.${ numAlias }`;
+>>>>>>> 818dfe0e6bd75f0d065c31571fdebe83e6998878
 			newCommand.command = setting[1].replace(/\s+/g, "_");
 			newCommand.run = setting[0];
       newCommand.title = setting[1];
