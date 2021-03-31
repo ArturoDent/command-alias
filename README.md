@@ -97,7 +97,7 @@ The default category is `Alias` so that your commands may appear as `Alias: mkdi
 
 Examples of different `categories` as shown in the Command Palette: 
 
-&emsp;&emsp; <img src="https://github.com/ArturoDent/command-alias/blob/master/images/KeyboardShortcutsAlias.jpg?raw=true" width="700" height="450" alt="Custom category demo"/>
+&emsp;&emsp; <img src="https://github.com/ArturoDent/command-alias/blob/master/images/KeyboardShortcutsAlias.jpg?raw=true" width="900" height="350" alt="Custom category demo"/>
 
 <br/> <br/>
 
@@ -131,13 +131,9 @@ If you had this in your settings:
 -----------  
 -----------   
 
-<<<<<<< HEAD
-**Using the command `workbench.action.terminal.sendSequence`:**  
+**Using the command `workbench.action.terminal.sendSequence`**:  
 
 If you frequently use this command to send text to the terminal, you can set up aliases so they wil show up in the Command Palette.  [`\u000d` (same as `\r`) is unicode for a `return` so the terminal command runs immediately, it is up to you whether you want that.]  
-=======
-** Using the command `workbench.action.terminal.sendSequence`.  If you frequently use this command to send text to the terminal, you can set up aliases so they wil show up in the Command Palette.  [`\u000d` (same as `\r`) is unicode for a `return` so the terminal command runs immediately, it is up to you whether you want that.]  
->>>>>>> 818dfe0e6bd75f0d065c31571fdebe83e6998878
 
 ```jsonc
 "command aliases": {
@@ -173,11 +169,8 @@ Although you can use command titles like `"Run Last Terminal Command"` in the se
 You can get this altered form of the commands by right-clicking the command in the `Keyboard Shortcuts` and selecting `Copy Command ID` or simply change all spaces to underscores.  
 
 <br/>  
-<<<<<<< HEAD
-=======
 
 -----------------
->>>>>>> 818dfe0e6bd75f0d065c31571fdebe83e6998878
 
 -----------------  
 ------------  
@@ -238,11 +231,7 @@ Or, of course, any changes will take affect the next time vscode is started.
 * 0.4.0 &emsp;  Catch error: writing to dirty settings and prompt, save and retry.  
 &emsp;&emsp; &emsp; Added ability to add multiple aliases through the `createAliases` InputBox.
 * 0.5.0 &emsp;  Added support for multiple `workbench.action.terminal.sendSequence` command with args.  
-<<<<<<< HEAD
-* 0.5.5 &emsp;  Added support for Command titles to be used in keybindings.  
-=======
 * 0.5.5 &emsp;  Added support for Command titles to be used in keybindings.
->>>>>>> 818dfe0e6bd75f0d065c31571fdebe83e6998878
 &emsp;&emsp; &emsp; Refactored settings arguments in preparation for commands that use multiple arguments.    
 
 ### TODO
