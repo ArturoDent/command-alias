@@ -32,66 +32,65 @@ exports.getCategorySetting = function () {
  */
 exports.makePackageCommandsFromSettings = function (settings, userCategory) {
 
-  let settingsJSON = [];
+	let settingsJSON = [];
 
-  let newCommand = {};
-  newCommand.command = "command-alias.createAliases";
-  newCommand.title = "Create aliases from vscode's built-in commands";
-  newCommand.category = userCategory;
+	let newCommand = {};
+	newCommand.command = "command-alias.createAliases";
+	newCommand.title = "Create aliases from vscode's built-in commands";
+	newCommand.category = userCategory;
 
-  settingsJSON.push(newCommand);
-	let numAlias;
+	settingsJSON.push(newCommand);
 
-  // {
-  //   "explorer.newFile": ["touch","touch2"],
-  //   "explorer.newFolder": "mkdir",
-  //   "git.checkout": "Git: Switch to...",
-	// 		"workbench.action.terminal.sendSequence": [
-  //    	{"pandoc1": "echo ${file} 1"},
-  //    	{"pandoc2": "echo ${file} 2"}
-  //   ]
-  // };
+	// {
+	// 	"explorer.newFile": "touch",
+	// 	"explorer.newFolder": ["mkdir", "new directory"],
+	// 	"git.checkout": "Git: Switch to...",
 
-	//   "command": "workbench.action.terminal.sendSequence",
-  //   "args": {
-  //     "text": "awk -f '${file}'\u000D",
-  //   }
+	// 	"workbench.action.terminal.sendSequence": [
+	// 		{ "Open Styles": { "text": "code -r '../style.scss'\r" } },
+	// 		{ "Change Terminal Directory": { "text": "cd '${fileDirname}'\r" } }
+	// 	]
+	// }
 
 	for (const setting of settings) {
 
 		if (Array.isArray(setting[1]) && (typeof setting[1][0] === "object")) {
-      numAlias = 1;
 
       for (const item of setting[1]) {
         let newCommand = {};
-        newCommand.command = `command-alias.${ setting[0] }.${ numAlias++ }`;
+        // newCommand.command = `command-alias.${ setting[0] }.${ numAlias++ }`;
+				newCommand.command = Object.keys(item)[0].replace(/\s+/g, "_");
+				newCommand.run = setting[0];
         newCommand.title = Object.keys(item)[0];
 				newCommand.category = userCategory;
-				const args = {
-					text: `${Object.values(item)[0]}`
-				};
-				newCommand.args = args;
+				// const args = {
+				// 	text: `${Object.values(item)[0]}`
+				// };
+				// const args = Object.values(item)[0];
+				newCommand.args = Object.values(item)[0];
         settingsJSON.push(newCommand);
       }
     }
 
     else if (Array.isArray(setting[1])) {
-      numAlias = 1;
 
       for (const item of setting[1]) {
         let newCommand = {};
-        newCommand.command = `command-alias.${ setting[0] }.${ numAlias++ }`;
+        // newCommand.command = `command-alias.${ setting[0] }.${ numAlias++ }`;
+				newCommand.command = item.replace(/\s+/g, "_");
+				newCommand.run = setting[0];
         newCommand.title = item;
         newCommand.category = userCategory;
         settingsJSON.push(newCommand);
       }
     }
     else {
-      numAlias = 1;
       let newCommand = {};
-      newCommand.command = `command-alias.${ setting[0] }.${ numAlias }`;
+      // newCommand.command = `command-alias.${ setting[0] }.${ numAlias }`;
+			newCommand.command = setting[1].replace(/\s+/g, "_");
+			newCommand.run = setting[0];
       newCommand.title = setting[1];
-      newCommand.category = userCategory;
+			newCommand.category = userCategory;
       settingsJSON.push(newCommand);
     }
   };

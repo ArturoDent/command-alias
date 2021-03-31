@@ -1,6 +1,6 @@
 # Command Aliases  
 
-Create your own aliases for commands in vscode.  A command can have multiple aliases if you want.  The aliases are the command titles/labels that show up in the Command Palette.  The built-in titles are not removed.  
+Create your own aliases for commands in vscode.  A command can have multiple aliases if you want.  The aliases are the command titles/labels that show up in the Command Palette.  Any built-in titles are not removed.  Some built-in commands don't have any title; this extension can quickly create an simple title for any command.  
 
 With v0.5.0 you can create aliases for the `workbench.action.terminal.sendSequence` command, each with different arguments.  See below for an example.   
 
@@ -97,7 +97,7 @@ The default category is `Alias` so that your commands may appear as `Alias: mkdi
 
 Examples of different `categories` as shown in the Command Palette: 
 
-&emsp;&emsp; <img src="https://github.com/ArturoDent/command-alias/blob/master/images/AliasDemoWithhAlias.gif?raw=true" width="700" height="450" alt="Custom category demo"/>
+&emsp;&emsp; <img src="https://github.com/ArturoDent/command-alias/blob/master/images/KeyboardShortcutsAlias.jpg?raw=true" width="700" height="450" alt="Custom category demo"/>
 
 <br/> <br/>
 
@@ -131,24 +131,44 @@ If you had this in your settings:
 -----------  
 -----------   
 
-** Using the command `workbench.action.terminal.sendSequence`.  If you frequently use this command to send text to the terminal, you can set up aliases so they wil show up in the Command Palette.  [`\u000d` is unicode for a `return` so the terminal command runs immediately, it is up to you whether you want that.]  
+** Using the command `workbench.action.terminal.sendSequence`.  If you frequently use this command to send text to the terminal, you can set up aliases so they wil show up in the Command Palette.  [`\u000d` (same as `\r`) is unicode for a `return` so the terminal command runs immediately, it is up to you whether you want that.]  
 
 ```jsonc
 "command aliases": {
-	"explorer.newFile": ["touch","touch2"],
-	"explorer.newFolder": "mkdir",
+
+	"explorer.newFile": "touch",
+	"explorer.newFolder": ["mkdir", "new directory"],
 	"git.checkout": "Git: Switch to...",
+
 	"workbench.action.terminal.sendSequence": [
-		{"open styles": "code -r '../style.scss'\u000d"},
-		{"change terminal directory": "cd '${fileDirname}'\u000d"}     // change terminal directory to current file's dirname
+		{ "Run Last Terminal Command": { "text": "\u001b[A\u000d" } },
+		{ "Set Terminal to Current File Folder": { "text": "cd '${fileDirname}'\r" } }
 	]
-}
+},
 ```
 
 &emsp;&emsp; <img src="https://github.com/ArturoDent/command-alias/blob/master/images/sendSequenceDemo.gif?raw=true" width="900" height="500" alt="command palette sendSequence commands demo"/>  
 
+<br/> 
+
+Although you can use command titles like `"Run Last Terminal Command"` in the settings, vscode does not allow commands with spaces.  So that command would necessarily be automatically changed to `"Run_Last_Terminal_Command"` behind the scenes.  The version without spaces should be used in any keybindings or macros.  Like:
+
+```jsonc	
+{
+	"key": "alt+t",
+	"command": "Set_Terminal_to_Current_File_Folder"
+},
+{
+	"key": "alt+x",
+	"command": "Run_Last_Terminal_Command"
+}
+```
+
+You can get this altered form of the commands by right-clicking the command in the `Keyboard Shortcuts` and selecting `Copy Command ID` or simply change all spaces to underscores.  
+
 <br/>  
-<br/>  
+
+-----------------
 
 ### You can eliminate any aliases from vscode by deleting or commenting-out the settings - then reloading as prompted. 
 * You do not need to uninstall this extension to remove the aliases from the Command Palette.
@@ -206,11 +226,13 @@ Or, of course, any changes will take affect the next time vscode is started.
 * 0.4.0 &emsp;  Catch error: writing to dirty settings and prompt, save and retry.  
 &emsp;&emsp; &emsp; Added ability to add multiple aliases through the `createAliases` InputBox.
 * 0.5.0 &emsp;  Added support for multiple `workbench.action.terminal.sendSequence` command with args.  
-
+* 0.5.5 &emsp;  Added support for Command titles to be used in keybindings.
+&emsp;&emsp; &emsp; Refactored settings arguments in preparation for commands that use multiple arguments.    
 
 ### TODO
 
-[&emsp; ] - Explore the ability to use command titles as command names in keybindings.     
+[ X ] - Explore the ability to use command titles as command names in keybindings.  
+[&emsp; ] - Explore the ability to use multiple args for certain commands.        
 [&emsp; ] - Explore the ability to specify any number of `categories` and assign to different commands.  
 
 

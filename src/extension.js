@@ -130,6 +130,7 @@ async function loadCommands(context, category) {
 	for (const pcommand of packageCommands) {
 
 		let args = {};
+		let run = "";
 
     // skip already registered commands
 		// remove args if any (delete command.args) because args is not a property of commands
@@ -139,11 +140,16 @@ async function loadCommands(context, category) {
 			delete pcommand.args;
 		}
 
+		if (pcommand.run) {
+			run = pcommand.run;
+			delete pcommand.run;
+		}
+
     if (allCommands.includes(pcommand.command)) continue;
 
     if (pcommand.command !== 'command-alias.createAliases') {
 
-			let makeCommand = pcommand.command.replace(/^command-alias\./m, '').replace(/\.\d+$/m, '');
+			// let makeCommand = pcommand.command.replace(/^command-alias\./m, '').replace(/\.\d+$/m, '');
 
       // rejected promise: Error: command 'someCommand' already exists fixed with includes() check above
 			disposable = vscode.commands.registerCommand(pcommand.command, function () {
@@ -151,20 +157,13 @@ async function loadCommands(context, category) {
 				// 	vscode.commands.executeCommand(makeCommand, args);
 				// }
 				// else vscode.commands.executeCommand(makeCommand);
-				vscode.commands.executeCommand(makeCommand, args);
+				vscode.commands.executeCommand(run, args);
       });
       context.subscriptions.push(disposable);
       disposables.push(disposable);
     }
   };
 }
-
-
-function _commandHandler() {
-
-	// vscode.commands.executeCommand('workbench.action.terminal.sendSequence',  {"text": "echo 11111" });
-	return  {"text": "echo 11111" };
-};
 
 
 /**
@@ -178,9 +177,15 @@ function commandArraysAreEquivalent(settings, packages) {
 
   if (settings.length !== packages.length) return false;
 
-  return settings.every(setting => packages.some(pcommand => {
-    return (pcommand.command === setting.command) && (pcommand.title === setting.title) &&
-    (pcommand.category === setting.category);
+	return settings.every(setting => packages.some(pcommand => {
+
+		// add 'args' and 'run'
+		if (pcommand.args)
+			return (pcommand.command === setting.command) && (pcommand.title === setting.title) &&
+				(pcommand.category === setting.category) && (pcommand.run === setting.run) && (Object.entries(pcommand.args).toString() === Object.entries(setting.args).toString());
+		else
+			return (pcommand.command === setting.command) && (pcommand.title === setting.title) &&
+			(pcommand.category === setting.category) && (pcommand.run === setting.run);
   }));
 }
 
