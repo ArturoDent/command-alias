@@ -46,10 +46,10 @@ exports.makePackageCommandsFromSettings = function (settings, userCategory) {
 	// 	"explorer.newFolder": ["mkdir", "new directory"],
 	// 	"git.checkout": "Git: Switch to...",
 
-	// 	"workbench.action.terminal.sendSequence": [
-	// 		{ "Open Styles": { "text": "code -r '../style.scss'\r" } },
-	// 		{ "Change Terminal Directory": { "text": "cd '${fileDirname}'\r" } }
-	// 	]
+		// "workbench.action.terminal.sendSequence": [
+		// 	{ "Open Styles": { "text": "code -r '../style.scss'\r" } },
+		// 	{ "Change Terminal Directory": { "text": "cd '${fileDirname}'\r" } }
+		// ]
 	// }
 
 	for (const setting of settings) {

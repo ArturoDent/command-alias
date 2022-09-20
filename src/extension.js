@@ -241,7 +241,6 @@ async function updateCommandAliasesSettings(newCommands) {
 
   for (let [key, value] of Object.entries(newCommands)) {
 
-    // // value = value ? value : `<defaultAlias>`;
     // if (!value) value = `<defaultAlias>`;
     value = cleanAliasInput(value);
 
@@ -297,7 +296,7 @@ function cleanAliasInput(value) {
 
   value = value.filter((item) => item.length > 0); // for aliases that end up as empty strings: "A1,,,,A2"
 
-  value = value.length ? value : `<defaultAlias>`;  // if value is now an array with nothing in it, aall filtered out
+  value = value.length ? value : `<defaultAlias>`;  // if value is now an array with nothing in it, all filtered out
 
   // don't make an array for only one value : ['Alias1']
   if (value.length === 1 && value !== '<defaultAlias>') value = value[0];
