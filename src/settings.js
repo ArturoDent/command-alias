@@ -34,12 +34,12 @@ exports.makePackageCommandsFromSettings = function (settings, userCategory) {
 
 	let settingsJSON = [];
 
-	// let newCommand = {};
-	// newCommand.command = "command-alias.createAliases";
-	// newCommand.title = "Create aliases from vscode's built-in commands";
-	// newCommand.category = userCategory;
+	let newCommand = {};
+	newCommand.command = "command-alias.createAliases";
+	newCommand.title = "Create aliases from vscode's built-in commands";
+	newCommand.category = userCategory;
 
-	// settingsJSON.push(newCommand);
+	settingsJSON.push(newCommand);
 
 	// {
 	// 	"explorer.newFile": "touch",
@@ -109,7 +109,7 @@ exports.makeSettingsEventsFromSettingsPackageCommands = function (settingsComman
   // ],
 
   let settingsJSON = [];
-  // settingsJSON.push("onStartupFinished");
+  settingsJSON.push("onStartupFinished");
 
   for (const command of settingsCommands) {
     settingsJSON.push(`onCommand:${ command.command }`);
