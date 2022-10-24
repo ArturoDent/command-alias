@@ -11,6 +11,7 @@
 			"request": "launch",
 			"runtimeExecutable": "${execPath}",
 			"args": [
+				"${workspaceFolder}/../Test Bed",
 				"--extensionDevelopmentPath=${workspaceFolder}"
 			]
 		},

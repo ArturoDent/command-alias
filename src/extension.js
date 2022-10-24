@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const settingsJS = require('./settings.js');
-const packageJSON = require('./packageJSON.js');
+const extensionPackageJSON = require('./packageJSON.js');
 
 let disposables = [];
 
@@ -24,7 +24,6 @@ async function activate(context) {
   // if this extension's 'command aliases' settings are changed, reload the commands
   // notify user of the need to reload vscode
 
-  // disposable = vscode.workspace.onDidChangeConfiguration(async (event) => {
   context.subscriptions.push(vscode.workspace.onDidChangeConfiguration(async (event) => {
 
     if (event.affectsConfiguration('command aliases') || event.affectsConfiguration('commandAlias')) {
@@ -43,8 +42,8 @@ async function activate(context) {
   }));
 
   // get rid of these *** TODO
-  context.subscriptions.push(disposable);
-  disposables.push(disposable);
+  // context.subscriptions.push(disposable);
+  // disposables.push(disposable);
 
   disposable = vscode.commands.registerCommand('command-alias.createAliases', async function () {
 
@@ -91,32 +90,46 @@ async function activate(context) {
  */
 async function loadCommands(context, category) {
 
-  let thisExtension = vscode.extensions.getExtension('ArturoDent.command-alias');
+  // let thisExtension = vscode.extensions.getExtension('ArturoDent.command-alias');
+  let packageJSON = await extensionPackageJSON.getPackageJSON();
+  // let packageCommands = packageJSON.contributes.commands;
+  
   let disposable;
-
   let packageCommands;
   let settingsPackageCommands;
   let packageEvents;
   let settingsEvents;
 
-	const currentSettings = settingsJS.getCurrentSettings();
+	const currentSettings = await settingsJS.getCurrentSettings();
 
   if (currentSettings) {
 
-    packageCommands = packageJSON.getPackageJSONCommands();
+    // packageCommands = await packageJSON.getPackageJSONCommands();
+    packageCommands = packageJSON.contributes.commands;
+    packageCommands.shift();
     settingsPackageCommands = settingsJS.makePackageCommandsFromSettings(currentSettings, category);
 
-    packageEvents = thisExtension.packageJSON.activationEvents;
+    // packageEvents = thisExtension.packageJSON.activationEvents;
+    packageEvents = packageJSON.activationEvents;
+    packageEvents.shift();
+    packageEvents.shift();
+    
     settingsEvents = settingsJS.makeSettingsEventsFromSettingsPackageCommands(settingsPackageCommands);
-
 
     if (!commandArraysAreEquivalent(settingsPackageCommands, packageCommands) ||
         !activationEventArraysAreEquivalent(settingsEvents, packageEvents)) {
 
-      thisExtension.packageJSON.contributes.commands = settingsPackageCommands;
-      thisExtension.packageJSON.activationEvents = settingsEvents;
+      // thisExtension.packageJSON.contributes.commands = settingsPackageCommands;
+      // thisExtension.packageJSON.activationEvents = settingsEvents;
+      packageJSON.contributes.commands = settingsPackageCommands;
+      packageJSON.activationEvents = settingsEvents;
 
-      fs.writeFileSync(path.join(context.extensionPath, 'package.json'), JSON.stringify(thisExtension.packageJSON, null, 1));
+      fs.writeFileSync(path.join(context.extensionPath, 'package.json'), JSON.stringify(packageJSON, null, 1));
+
+      // below is necessary, see https://github.com/microsoft/vscode/issues/131208#issuecomment-903525999
+      // cache busting
+      const time = new Date();
+      fs.utimesSync(context.extensionPath, time, time);
     }
   }
 
@@ -153,7 +166,7 @@ async function loadCommands(context, category) {
 
       // rejected promise: Error: command 'someCommand' already exists fixed with includes() check above
 			disposable = vscode.commands.registerCommand(pcommand.command, function () {
-				// if (args) {
+				// if (args) {  // from keybinding?
 				// 	vscode.commands.executeCommand(makeCommand, args);
 				// }
 				// else vscode.commands.executeCommand(makeCommand);
