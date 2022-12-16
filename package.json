@@ -1,72 +1,72 @@
 {
- "id": "ArturoDent.command-alias",
- "name": "command-alias",
- "displayName": "Command Alias",
- "description": "Create aliases for built-in commands",
- "version": "0.5.9",
- "publisher": "ArturoDent",
- "engines": {
-  "vscode": "^1.51.0"
- },
- "repository": {
-  "type": "git",
-  "url": "https://github.com/ArturoDent/command-alias"
- },
- "keywords": [
-  "commands",
-  "alias",
-  "title",
-  "rename"
- ],
- "license": "MIT",
- "categories": [
-  "Other"
- ],
- "activationEvents": [
-  "onStartupFinished",
-  "onCommand:command-alias.createAliases"
- ],
- "main": "./src/extension.js",
- "contributes": {
-  "commands": [
-   {
-    "command": "command-alias.createAliases",
-    "title": "Create aliases from vscode's built-in commands",
-    "category": "Alias"
-   }
+  "id": "ArturoDent.command-alias",
+  "name": "command-alias",
+  "displayName": "Command Alias",
+  "description": "Create aliases for built-in commands",
+  "version": "0.6.0",
+  "publisher": "ArturoDent",
+  "engines": {
+    "vscode": "^1.51.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ArturoDent/command-alias"
+  },
+  "keywords": [
+    "commands",
+    "alias",
+    "title",
+    "rename"
   ],
-  "configuration": {
-   "title": "Aliases (command labels) created by users",
-   "properties": {
-    "command aliases": {
-     "type": "object",
-     "description": "An object containing command and label/alias pairs.",
-     "order": 2
-    },
-    "commandAlias.category": {
-     "type": "string",
-     "default": "Alias",
-     "description": "A word to precede all created commands, like the default 'Alias' as in 'Alias:  touch' in the Command Palette.",
-     "markdownDescription": "A word to precede all created commands in the Command Palette, like the default `Alias` as in `Alias: mkdir`.  Leave empty to use no alias.",
-     "order": 1
+  "license": "MIT",
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onCommand:command-alias.createAliases"
+  ],
+  "main": "./src/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "command-alias.createAliases",
+        "title": "Create aliases from vscode's built-in commands",
+        "category": "Alias"
+      }
+    ],
+    "configuration": {
+      "title": "Aliases (command labels) created by users",
+      "properties": {
+        "command aliases": {
+          "type": "object",
+          "description": "An object containing command and label/alias pairs.",
+          "order": 2
+        },
+        "commandAlias.category": {
+          "type": "string",
+          "default": "Alias",
+          "description": "A word to precede all created commands, like the default 'Alias' as in 'Alias:  touch' in the Command Palette.",
+          "markdownDescription": "A word to precede all created commands in the Command Palette, like the default `Alias` as in `Alias: mkdir`.  Leave empty to use no alias.",
+          "order": 1
+        }
+      }
     }
-   }
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "node ./test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.51.0",
+    "@types/glob": "^7.1.1",
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^13.11.0",
+    "eslint": "^6.8.0",
+    "glob": "^7.1.6",
+    "mocha": "^7.1.2",
+    "typescript": "^3.8.3",
+    "vscode-test": "^1.3.0"
   }
- },
- "scripts": {
-  "lint": "eslint .",
-  "pretest": "npm run lint",
-  "test": "node ./test/runTest.js"
- },
- "devDependencies": {
-  "@types/vscode": "^1.51.0",
-  "@types/glob": "^7.1.1",
-  "@types/mocha": "^7.0.2",
-  "@types/node": "^13.11.0",
-  "eslint": "^6.8.0",
-  "glob": "^7.1.6",
-  "mocha": "^7.1.2",
-  "typescript": "^3.8.3",
-  "vscode-test": "^1.3.0"
- }
 }

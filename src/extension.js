@@ -99,7 +99,7 @@ async function loadCommands(context, category) {
   let packageEvents;
   let settingsEvents;
 
-	const currentSettings = settingsJS.getCurrentSettings();
+  const currentSettings = settingsJS.getCurrentSettings();
 
   if (currentSettings) {
 
@@ -111,7 +111,7 @@ async function loadCommands(context, category) {
 
 
     if (!commandArraysAreEquivalent(settingsPackageCommands, packageCommands) ||
-        !activationEventArraysAreEquivalent(settingsEvents, packageEvents)) {
+      !activationEventArraysAreEquivalent(settingsEvents, packageEvents)) {
 
       thisExtension.packageJSON.contributes.commands = settingsPackageCommands;
       thisExtension.packageJSON.activationEvents = settingsEvents;
@@ -120,44 +120,44 @@ async function loadCommands(context, category) {
     }
   }
 
-    // {
-    //   "command": "command-alias.editor.action.copyLinesDownAction.1",
-    //   "title": "Shimmy"
-    //  },
+  // {
+  //   "command": "command-alias.editor.action.copyLinesDownAction.1",
+  //   "title": "Shimmy"
+  //  },
 
-	const allCommands = await vscode.commands.getCommands(true);
+  const allCommands = await vscode.commands.getCommands(true);
 
-	for (const pcommand of packageCommands) {
+  for (const pcommand of packageCommands) {
 
-		let args = {};
-		let run = "";
+    let args = {};
+    let run = "";
 
     // skip already registered commands
-		// remove args if any (delete command.args) because args is not a property of commands
+    // remove args if any (delete command.args) because args is not a property of commands
 
-		if (pcommand.args) {
-			args = pcommand.args;
-			delete pcommand.args;
-		}
+    if (pcommand.args) {
+      args = pcommand.args;
+      delete pcommand.args;
+    }
 
-		if (pcommand.run) {
-			run = pcommand.run;
-			delete pcommand.run;
-		}
+    if (pcommand.run) {
+      run = pcommand.run;
+      delete pcommand.run;
+    }
 
     if (allCommands.includes(pcommand.command)) continue;
 
     if (pcommand.command !== 'command-alias.createAliases') {
 
-			// let makeCommand = pcommand.command.replace(/^command-alias\./m, '').replace(/\.\d+$/m, '');
+      // let makeCommand = pcommand.command.replace(/^command-alias\./m, '').replace(/\.\d+$/m, '');
 
       // rejected promise: Error: command 'someCommand' already exists fixed with includes() check above
-			disposable = vscode.commands.registerCommand(pcommand.command, function () {
-				// if (args) {
-				// 	vscode.commands.executeCommand(makeCommand, args);
-				// }
-				// else vscode.commands.executeCommand(makeCommand);
-				vscode.commands.executeCommand(run, args);
+      disposable = vscode.commands.registerCommand(pcommand.command, function () {
+        // if (args) {
+        // 	vscode.commands.executeCommand(makeCommand, args);
+        // }
+        // else vscode.commands.executeCommand(makeCommand);
+        vscode.commands.executeCommand(run, args);
       });
       context.subscriptions.push(disposable);
       disposables.push(disposable);
@@ -177,15 +177,15 @@ function commandArraysAreEquivalent(settings, packages) {
 
   if (settings.length !== packages.length) return false;
 
-	return settings.every(setting => packages.some(pcommand => {
+  return settings.every(setting => packages.some(pcommand => {
 
-		// add 'args' and 'run'
-		if (pcommand.args)
-			return (pcommand.command === setting.command) && (pcommand.title === setting.title) &&
-				(pcommand.category === setting.category) && (pcommand.run === setting.run) && (Object.entries(pcommand.args).toString() === Object.entries(setting.args).toString());
-		else
-			return (pcommand.command === setting.command) && (pcommand.title === setting.title) &&
-			(pcommand.category === setting.category) && (pcommand.run === setting.run);
+    // add 'args' and 'run'
+    if (pcommand.args)
+      return (pcommand.command === setting.command) && (pcommand.title === setting.title) &&
+        (pcommand.category === setting.category) && (pcommand.run === setting.run) && (Object.entries(pcommand.args).toString() === Object.entries(setting.args).toString());
+    else
+      return (pcommand.command === setting.command) && (pcommand.title === setting.title) &&
+        (pcommand.category === setting.category) && (pcommand.run === setting.run);
   }));
 }
 
@@ -244,7 +244,7 @@ async function updateCommandAliasesSettings(newCommands) {
     // if (!value) value = `<defaultAlias>`;
     value = cleanAliasInput(value);
 
-    newValues = { ...newValues, ...{ [key]: value } }
+    newValues = { ...newValues, ...{ [key]: value } };
   }
   const updatedValue = { ...currentValue, ...newValues };
 
@@ -254,28 +254,28 @@ async function updateCommandAliasesSettings(newCommands) {
     .then(() => {
       // fulfillment
     }, reason => {
-        if (reason.message === `Unable to write into user settings because the file is dirty. Please save the user settings file first and then try again.`) {
-          vscode.window
-            .showInformationMessage(`Your settings.json file is dirty.  It must be saved before your changes can be made.
+      if (reason.message === `Unable to write into user settings because the file is dirty. Please save the user settings file first and then try again.`) {
+        vscode.window
+          .showInformationMessage(`Your settings.json file is dirty.  It must be saved before your changes can be made.
   "Save Settings": settings.json will be opened, saved and we will try to make your alias changes.
   "Open Settings Only": you will go there but your aliases changes will not be made.`,
-              { modal: true },
-                 // three buttons: 'Save Settings', 'Open Settings Only' and 'Cancel' (which is auto-generated)
-              ...["Save Settings", "Open Settings Only"])
-            .then(async selected => {
-              if (selected === "Save Settings") {
+            { modal: true },
+            // three buttons: 'Save Settings', 'Open Settings Only' and 'Cancel' (which is auto-generated)
+            ...["Save Settings", "Open Settings Only"])
+          .then(async selected => {
+            if (selected === "Save Settings") {
 
-                await vscode.commands.executeCommand('workbench.action.openSettingsJson');
-                await vscode.window.activeTextEditor.document.save();
-                // try again
-                updateCommandAliasesSettings(newCommands);
-              }
+              await vscode.commands.executeCommand('workbench.action.openSettingsJson');
+              await vscode.window.activeTextEditor.document.save();
+              // try again
+              updateCommandAliasesSettings(newCommands);
+            }
 
-              else if (selected === "Open Settings Only") {
-                await vscode.commands.executeCommand('workbench.action.openSettingsJson');
-              }
-            });
-        }
+            else if (selected === "Open Settings Only") {
+              await vscode.commands.executeCommand('workbench.action.openSettingsJson');
+            }
+          });
+      }
     });
 
   // {
@@ -287,7 +287,7 @@ async function updateCommandAliasesSettings(newCommands) {
 
 function cleanAliasInput(value) {
 
-// strip leading and trailing whitespace/commas from complete list: "    A1, A2    "
+  // strip leading and trailing whitespace/commas from complete list: "    A1, A2    "
   if (value) value = value.replace(/^[,\s]*|[,\s]*$/gm, "");
 
   // value may be a comma-separated list of aliases withn a string
@@ -307,7 +307,7 @@ function cleanAliasInput(value) {
 exports.activate = activate;
 
 // eslint-disable-next-line no-unused-vars
-function deactivate() {}
+function deactivate() { }
 
 
 // module.exports = {

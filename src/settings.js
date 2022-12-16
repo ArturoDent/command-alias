@@ -32,37 +32,37 @@ exports.getCategorySetting = function () {
  */
 exports.makePackageCommandsFromSettings = function (settings, userCategory) {
 
-	let settingsJSON = [];
+  let settingsJSON = [];
 
-	let newCommand = {};
-	newCommand.command = "command-alias.createAliases";
-	newCommand.title = "Create aliases from vscode's built-in commands";
-	newCommand.category = userCategory;
+  let newCommand = {};
+  newCommand.command = "command-alias.createAliases";
+  newCommand.title = "Create aliases from vscode's built-in commands";
+  newCommand.category = userCategory;
 
-	settingsJSON.push(newCommand);
+  settingsJSON.push(newCommand);
 
-	// {
-	// 	"explorer.newFile": "touch",
-	// 	"explorer.newFolder": ["mkdir", "new directory"],
-	// 	"git.checkout": "Git: Switch to...",
+  // {
+  // 	"explorer.newFile": "touch",
+  // 	"explorer.newFolder": ["mkdir", "new directory"],
+  // 	"git.checkout": "Git: Switch to...",
 
-		// "workbench.action.terminal.sendSequence": [
-		// 	{ "Open Styles": { "text": "code -r '../style.scss'\r" } },
-		// 	{ "Change Terminal Directory": { "text": "cd '${fileDirname}'\r" } }
-		// ]
-	// }
+  // "workbench.action.terminal.sendSequence": [
+  // 	{ "Open Styles": { "text": "code -r '../style.scss'\r" } },
+  // 	{ "Change Terminal Directory": { "text": "cd '${fileDirname}'\r" } }
+  // ]
+  // }
 
-	for (const setting of settings) {
+  for (const setting of settings) {
 
-		if (Array.isArray(setting[1]) && (typeof setting[1][0] === "object")) {
+    if (Array.isArray(setting[1]) && (typeof setting[1][0] === "object")) {
 
       for (const item of setting[1]) {
         let newCommand = {};
-				newCommand.command = Object.keys(item)[0].replace(/\s+/g, "_");
-				newCommand.run = setting[0];
+        newCommand.command = Object.keys(item)[0].replace(/\s+/g, "_");
+        newCommand.run = setting[0];
         newCommand.title = Object.keys(item)[0];
-				newCommand.category = userCategory;
-				newCommand.args = Object.values(item)[0];
+        newCommand.category = userCategory;
+        newCommand.args = Object.values(item)[0];
         settingsJSON.push(newCommand);
       }
     }
@@ -71,8 +71,8 @@ exports.makePackageCommandsFromSettings = function (settings, userCategory) {
 
       for (const item of setting[1]) {
         let newCommand = {};
-				newCommand.command = item.replace(/\s+/g, "_");
-				newCommand.run = setting[0];
+        newCommand.command = item.replace(/\s+/g, "_");
+        newCommand.run = setting[0];
         newCommand.title = item;
         newCommand.category = userCategory;
         settingsJSON.push(newCommand);
@@ -80,10 +80,10 @@ exports.makePackageCommandsFromSettings = function (settings, userCategory) {
     }
     else {
       let newCommand = {};
-			newCommand.command = setting[1].replace(/\s+/g, "_");
-			newCommand.run = setting[0];
+      newCommand.command = setting[1].replace(/\s+/g, "_");
+      newCommand.run = setting[0];
       newCommand.title = setting[1];
-			newCommand.category = userCategory;
+      newCommand.category = userCategory;
       settingsJSON.push(newCommand);
     }
   };
@@ -102,10 +102,10 @@ exports.makePackageCommandsFromSettings = function (settings, userCategory) {
 exports.makeSettingsEventsFromSettingsPackageCommands = function (settingsCommands) {
 
   // "activationEvents": [
-    // "onStartupFinished",
-    // "onCommand:command-alias.createAliases",
-    // "onCommand:command-alias.editor.action.clipboardCutAction",
-    // "onCommand:command-alias.editor.action.clipboardPasteAction"
+  // "onStartupFinished",
+  // "onCommand:command-alias.createAliases",
+  // "onCommand:command-alias.editor.action.clipboardCutAction",
+  // "onCommand:command-alias.editor.action.clipboardPasteAction"
   // ],
 
   let settingsJSON = [];
