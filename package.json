@@ -53,6 +53,9 @@
       }
     }
   },
+  "extensionKind": [
+    "ui"
+  ],
   "scripts": {
     "lint": "eslint .",
     "pretest": "npm run lint",
