@@ -24,7 +24,6 @@
   ],
   "activationEvents": [
     "onStartupFinished",
-    "onCommand:command-alias.createAliases"
   ],
   "main": "./src/extension.js",
   "contributes": {
@@ -54,7 +53,8 @@
     }
   },
   "extensionKind": [
-    "ui"
+    "ui",
+    "workspace"
   ],
   "scripts": {
     "lint": "eslint .",
