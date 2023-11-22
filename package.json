@@ -3,7 +3,7 @@
   "name": "command-alias",
   "displayName": "Command Alias",
   "description": "Create aliases for built-in commands",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "publisher": "ArturoDent",
   "engines": {
     "vscode": "^1.75.0"
@@ -52,6 +52,10 @@
       }
     }
   },
+  "extensionKind": [
+    "ui",
+    "workspace"
+   ],
   "scripts": {
     "lint": "eslint .",
     "pretest": "npm run lint",
