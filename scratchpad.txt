@@ -11,3 +11,7 @@
   //     });
   // }
 
+if (a === 'some condition') 
+  return true
+else
+  return false

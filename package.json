@@ -6,7 +6,7 @@
   "version": "0.6.0",
   "publisher": "ArturoDent",
   "engines": {
-    "vscode": "^1.51.0"
+    "vscode": "^1.75.0"
   },
   "repository": {
     "type": "git",
@@ -23,9 +23,8 @@
     "Other"
   ],
   "activationEvents": [
-    "onStartupFinished",
-    "onCommand:command-alias.createAliases"
-  ],
+    "onStartupFinished"
+  ], 
   "main": "./src/extension.js",
   "contributes": {
     "commands": [
