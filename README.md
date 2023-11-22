@@ -43,7 +43,7 @@ It is necessary to create these default alias entries because vscode **requires*
 
 If you **manually** create an entry without an alias you will see this error message from vscode on trying to reload:  
 
-&emsp;&emsp; <img src="https://github.com/ArturoDent/command-alias/blob/master/images/ErrorMessageNoTitle.jpg?raw=true" width="800" height="175" alt="no title error message"/>
+&emsp;&emsp; <img src="https://github.com/ArturoDent/command-alias/blob/main/images/ErrorMessageNoTitle.jpg?raw=true" width="800" height="175" alt="no title error message"/>
 
 -------------
 <br/>
@@ -52,7 +52,7 @@ General demo of the `command-alias.createAliases` process:
 
 <br/>
 
-&emsp;&emsp; <img src="https://github.com/ArturoDent/command-alias/blob/master/images/fullDemo.gif?raw=true" width="900" height="600" alt="createAliases command demo"/>  
+&emsp;&emsp; <img src="https://github.com/ArturoDent/command-alias/blob/main/images/fullDemo.gif?raw=true" width="900" height="600" alt="createAliases command demo"/>  
 
 <br/>
 
@@ -96,11 +96,11 @@ The default category is `Alias` so that your commands may appear as `Alias: mkdi
 
 Examples of different `categories` as shown in the Command Palette:  
 
-&emsp;&emsp; <img src="https://github.com/ArturoDent/command-alias/blob/master/images/KeyboardShortcutsAlias.jpg?raw=true" width="900" height="350" alt="Custom category demo"/>
+&emsp;&emsp; <img src="https://github.com/ArturoDent/command-alias/blob/main/images/KeyboardShortcutsAlias.jpg?raw=true" width="900" height="350" alt="Custom category demo"/>
 
 <br/> <br/>
 
-&emsp;&emsp; <img src="https://github.com/ArturoDent/command-alias/blob/master/images/AliasDemoEmptyString.gif?raw=true" width="700" height="450" alt="empty string category demo"/>
+&emsp;&emsp; <img src="https://github.com/ArturoDent/command-alias/blob/main/images/AliasDemoEmptyString.gif?raw=true" width="700" height="450" alt="empty string category demo"/>
 
 <br/>
 
@@ -121,7 +121,7 @@ If you had this in your settings:
 
   <br/>
 
-&emsp;&emsp; <img src="https://github.com/ArturoDent/command-alias/blob/master/images/commandPaletteWithDuplicateAliasess.gif?raw=true" width="500" height="275" alt="duplicate aliases in the commnad palette demo"/>
+&emsp;&emsp; <img src="https://github.com/ArturoDent/command-alias/blob/main/images/commandPaletteWithDuplicateAliasess.gif?raw=true" width="500" height="275" alt="duplicate aliases in the commnad palette demo"/>
 
 <br/>
 
@@ -148,7 +148,7 @@ If you frequently use this command to send text to the terminal, you can set up 
 },
 ```
 
-&emsp;&emsp; <img src="https://github.com/ArturoDent/command-alias/blob/master/images/sendSequenceDemo.gif?raw=true" width="900" height="500" alt="command palette sendSequence commands demo"/>  
+&emsp;&emsp; <img src="https://github.com/ArturoDent/command-alias/blob/main/images/sendSequenceDemo.gif?raw=true" width="900" height="500" alt="command palette sendSequence commands demo"/>  
 
 <br/>  
 
@@ -191,7 +191,7 @@ Demo using `createAliases` with a dirty - unsaved - `settings.json` file:
 
 <br/>
 
-&emsp;&emsp; <img src="https://github.com/ArturoDent/command-alias/blob/master/images/dirtyFileMessage.gif?raw=true" width="850" height="500" alt="reload message"/>
+&emsp;&emsp; <img src="https://github.com/ArturoDent/command-alias/blob/main/images/dirtyFileMessage.gif?raw=true" width="850" height="500" alt="reload message"/>
 
 <br/><br/>  
 
@@ -206,7 +206,7 @@ Or, of course, any changes will take affect the next time vscode is started.
 
 <br/>
 
-<img src="https://github.com/ArturoDent/command-alias/blob/master/images/reloadNotification.jpg?raw=true" width="525" height="150" alt="reload message"/>
+<img src="https://github.com/ArturoDent/command-alias/blob/main/images/reloadNotification.jpg?raw=true" width="525" height="150" alt="reload message"/>
 
 <br/>
 
