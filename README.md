@@ -2,6 +2,8 @@
 
 Create your own aliases for commands in vscode.  A command can have multiple aliases if you want.  The aliases are the command titles/labels that show up in the Command Palette.  Any built-in titles are not removed.  Some built-in commands don't have any title; this extension can quickly create an simple title for any command.  
 
+With v0.7.0 you can use arguments for more commands (maybe all) and use a `when` clause which will determine when that alias appears in the Command Palette.
+
 With v0.5.0 you can create aliases for `workbench.action.terminal.sendSequence` commands, each with different arguments.  See below for an example.  
 
 -------------------
@@ -18,7 +20,7 @@ If you do not supply an alias for a command a default value will be created: `<d
 
 ```jsonc
 "command aliases": {
-  "explorer.newFile": "touch",
+  "explorer.newFile": "touch",      // some command: your alias
   "explorer.newFolder": "mkdir",
   "history.showPrevious": "<defaultAlias>",
   "undo": "<defaultAlias>"
@@ -58,7 +60,6 @@ General demo of the `command-alias.createAliases` process:
 
 * Note that if you edit the `"commandAlias.category"` in the Settings UI as shown above that vscode has a rather short debounce lag for typing entries into that field.  So vscode will update the setting before you may be finished typing the `category` entry - and that will cause this extension to warn you about reloading vscode.  You can ignore the `reload` message until you are done with the Settings UI.
 
------------
 -----------
 
 ### Settings  
@@ -130,7 +131,45 @@ If you had this in your settings:
 -----------  
 -----------  
 
-**Using the command `workbench.action.terminal.sendSequence`**:  
+### Using arguments and a `when` clause in your settings.
+
+Here is how you could use a built-in vscode command `runCommands` which takes arguments in an `command aliases` setting:
+
+```jsonc
+"command aliases": {
+
+  "runCommands": {                     // a built-in vscode command
+    "Copy Line Down and Comment": {    // the alias you want to give it
+      "commands": [                    // you don't need the usual keybinding 'args' wrapper object
+        "editor.action.copyLinesDownAction",
+        "cursorUp",
+        "editor.action.addCommentLine",
+        "cursorDown"
+      ],
+      "when": "editorHasSelection && editorLangId === javascript"
+    }
+  },
+
+  "debug.startFromConfig": {       // a built-in vscode command
+    "Launch node <file>": {        // your alias for the Command Palette
+      // "noDebug": true,  // just run it without debugging
+      "type": "node",
+      "request": "launch",
+      "name": "Launch test.js",
+      "program": "test.js"
+    }
+  }
+}
+```
+
+Thanks to that `when` clause, the command `Copy Line Down and Comment` will only appear in the Command Palette when you are in a javascript file with a selection.  Any context clauses, like `editorHasSelection`, etc., are supported.  
+
+* Note, if you later make a keybinding for this alias (in your `keybindings.json`), you still need to add the `when` clause to that manually.  
+
+---------------
+---------------
+
+### Using the command `workbench.action.terminal.sendSequence`:  
 
 If you frequently use this command to send text to the terminal, you can set up aliases so they wil show up in the Command Palette.  [`\u000d` (same as `\r`) is unicode for a `return` so the terminal command runs immediately, it is up to you whether you want that.]  
 
@@ -171,10 +210,65 @@ You can get this altered form of the commands by right-clicking the command in t
 
 -----------------
 
+Here are the various forms you can use in your `settings.json`:
+
+```jsonc
+"command aliases": {
+  "debug.startFromConfig": {      // with arguments
+    "Launch node <file>": {
+      // "noDebug": true,  // just run it without debugging
+      "type": "node",
+      "request": "launch",
+      "name": "Launch test.js",
+      "program": "test.js"
+    }
+  },
+  "runCommands": {
+    "Copy Line Down and Comment": {  //with arguments and a when cluase
+      "commands": [
+        "editor.action.copyLinesDownAction",
+        "cursorUp",
+        "editor.action.addCommentLine",
+        "cursorDown"
+      ],
+      "when": "editorHasSelection && editorLangId === javascript"
+    }
+  },
+  "explorer.newFile": [     // two versions with no arguments
+    "touch",
+    "touch2"
+  ],
+  "explorer.newFolder": [   // use an array for multiple entries
+    {
+      "mkdir": {
+        "when": "editorLangId === javascript" 
+      }
+    },
+    "new directory"        // simple version
+  // both "mkdir" and "new directory" will appear in the Command Palette
+  ],
+  "git.checkout": "Git: Switch to...",         // simplest version
+  "workbench.action.terminal.sendSequence": [
+    {
+      "Run Last Terminal Command": {
+        "text": "\u001b[A\u000d"
+      }
+    },
+    {
+      "Set Terminal to Current File Folder": {
+        "text": "cd '${fileDirname}'\r"
+      }
+    }
+  ]
+}
+```
+
+See [Settings_examples.md](Settings_examples.md) for more real-world before/after examples converting actual `keybindings.json` entries into `command aliases` settings.
+
 -----------------  
 ------------  
 
-### You can eliminate any aliases from vscode by deleting or commenting-out the settings - then reloading as prompted.  
+### You can eliminate any aliases from vscode by deleting or commenting-out their setting - then reloading as prompted.  
 
 * You do not need to uninstall this extension to remove the aliases from the Command Palette.
 
@@ -231,11 +325,12 @@ Or, of course, any changes will take affect the next time vscode is started.
 * 0.5.0 &emsp;  Added support for multiple `workbench.action.terminal.sendSequence` command with args.  
 * 0.5.5 &emsp;  Added support for Command titles to be used in keybindings.
 &emsp;&emsp; &emsp; Refactored settings arguments in preparation for commands that use multiple arguments.  
+* 0.7.0 &emsp;  Added support for `when` context clauses and more/all arguments.  
 
 ### TODO
 
-[ X ] - Explore the ability to use command titles as command names in keybindings.  
-[&emsp; ] - Explore the ability to use multiple args for certain commands.  
+[ X ] - Explore using command titles as command names in keybindings.  
+[ X ] - Explore using multiple args for certain commands.  
 [&emsp; ] - Explore the ability to specify any number of `categories` and assign to different commands.  
 
 -----------------------------------------------------------------------------------------------------------

@@ -1,0 +1,205 @@
+ "field1": "abc"
+
+"field2": "cdf"
+
+
+  {
+    "key": "ctrl+shift+g",            
+    "command": "search.action.openNewEditor",
+    "args": {
+      "query": "CN=([^,]*)",
+      "isRegexp": true,
+      // "includes": "${file}",
+      "includes": "${relativeFile}",
+      // "excludes": "",
+      "showIncludesExcludes": true,
+      "triggerSearch": true,
+      "contextLines": 2,
+    }
+  },
+
+
+    {
+    "key": "ctrl+t",              
+    "command": "workbench.action.terminal.renameWithArg",
+    "args": {
+        "name": "remote"
+    }
+  },
+
+
+    {
+    "key": "alt+r",                
+    "command": "extension.multiCommand.execute",
+    "args": {
+  		// "interval": 500,
+      "sequence": [
+  			{
+  				"command": "jump-and-select.jumpBackward",
+  				"args": {
+  					"text": "^",
+  					"putCursorBackward": "afterCharacter",
+  					"restrictSearch": "line"
+  				}
+  			},
+  			{
+  				"command": "jump-and-select.jumpForwardSelect",
+  				"args": {
+  					"text": "$",
+  					"putCursorForward": "beforeCharacter",
+  					"restrictSearch": "line"
+  				}
+  			},
+      ]
+    },
+  },
+
+    {
+    "key": "alt+r",                    
+    "command": "findInCurrentFile",
+    "args": {
+      "find": "(matched)",
+      "replace": "${1:+\\U$1}",
+      "isRegex": true,
+      // "restrictFind": "nextSelect"
+    }
+  }
+
+    {
+    "key": "alt+i",
+    "command": "findInCurrentFile",        
+    "args": {
+      "preCommands": [
+        "editor.action.clipboardCopyAction",
+        "editor.action.insertLineAfter"
+      ],
+      "replace": "console.log (\"${CLIPBOARD}\", ${CLIPBOARD});",
+      "restrictFind": "line"
+    }
+  },
+
+    {
+    "key": "ctrl+shift+f",
+    "command": "workbench.action.findInFiles",         
+    "args": {
+      // "query": "(enum|struct|fn|trait|impl(<.*>)?|type) ",
+      "query": "${selectedText}",
+      // "isRegex": true,
+      // "replace": "$1",
+      // "triggerSearch": true,          // seems to be the default
+      "filesToInclude": "src, include", // no variables in findInFiles
+      // "preserveCase": true,
+      // "useExcludeSettingsAndIgnoreFiles": false,
+      // "isCaseSensitive": true,
+      // "matchWholeWord": true,
+      // "filesToExclude": ""
+    }
+  },
+
+  {
+    "key": "shift+alt+p",      
+    "command": "workbench.action.quickOpen",
+    "args": "@:" 
+  },
+
+    {
+    "key": "alt+t",            
+    "command": "runCommands",
+    "args": {
+      "commands": [
+        {
+          "command": "type",
+          "args": {
+            "text": "myText goes here:  "
+          }
+        },
+        "insert-last-modified-time.insertTimeCursor"
+      ]
+    },
+
+    {                        
+    "key": "alt+t",
+    "command": "runCommands",
+    "args": {
+      "commands": [
+        {
+          "command": "jump-and-select.jumpBackwardSelect",
+          "args": {
+            "text": "(",
+            "putCursorBackward": "afterCharacter"
+          }
+        },
+        {
+          "command": "jump-and-select.jumpForwardSelect",
+          "args": {
+            "text": ")",
+            "putCursorBackward": "beforeCharacter"
+          }
+        }
+      ]
+    },
+    // "when": "editorTextFocus && !editorReadonly && editorLangId == rust"
+    // "when": "editorTextFocus && !editorReadonly && resourceExtname =~ /\\.(js|ts)/"
+  },
+
+  {
+    "key": "alt+i",         
+    "command": "editor.action.insertSnippet",
+    "args": {
+      "snippet": "${TM_SELECTED_TEXT/([A-Z][a-z0-9_]+)/-${1:/downcase}/g}"
+    },
+    "when": "editorHasMultipleSelections && textInputFocus"
+  },
+
+{
+  "key": "alt+s",                  
+  "command": "findInCurrentFile",
+  "args": {
+    "description": "",
+    "preCommands": "cursorHomeSelect",
+    "find": "(\\$1) (\\d+)",
+    "isRegex": true,
+    "replace": [
+      "$${script:math_with_numbers}$$"
+    ],
+    "restrictFind": "line",
+  }
+},
+
+ {
+    "key": "ctrl+f",
+    "command": "editor.actions.findWithArgs",      
+    "args": {
+      // "findInSelection": false,
+      // "matchCase": true,            // should be isCaseSensitive
+      // "preserveCase": true,
+      "isRegex": true,
+      // "replaceString": "asdasd",
+      // "searchString": "^    (?:(?=\\w))",
+      "searchString": "^${selectedText}(?:(?=\\w))",
+      // "wholeWord": true,            // should be matchWholeWord
+    }
+  },
+
+    {
+    "key": "alt+down",            
+    "command": "jump-and-select.bySymbol",
+    "args": {
+      "symbols": "method",
+      "where": "nextStart",
+      "select": true
+    }
+  },
+
+    {
+    "key": "alt+k",        
+    "command": "jump-and-select.jumpForwardSelect",
+    "description": "cursor moves to next line that is empty or has whitespace",
+    "description2": "and puts cursor after any whitespace that may occur on that line",
+    "args": {
+      "text": "^\\s*?$",
+      "isRegex": true,
+      "select": "match",
+      "putCursorOnForwardSelect": "afterCharacter",
+    }
+  },

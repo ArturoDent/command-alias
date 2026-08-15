@@ -5,7 +5,8 @@ const path = require('path');
 const settingsJS = require('./settings.js');
 const packageJSON = require('./packageJSON.js');
 
-let disposables = [];
+// TODO: expose a command to see this extension's package.json and tell how to delete commands ?
+// TODO: is there a way to avoid writing all the junk to the package.json that vscode does ?
 
 /**
  * @param {vscode.ExtensionContext} context
@@ -19,32 +20,26 @@ async function activate(context) {
   let category = settingsJS.getCategorySetting();
 
   // load this extension's settings, make commands and activation events from them
-  await loadCommands(context, category);
+  // if package.json had to be rewritten to match, the new commands won't show up in the
+  // Command Palette until a reload - vscode only reads contributes.commands at window startup
+  const rewroteOnActivate = await loadCommands(context, category);
+  if (rewroteOnActivate) notifyReloadNeeded();
 
   // if this extension's 'command aliases' settings are changed, reload the commands
   // notify user of the need to reload vscode
 
-  // disposable = vscode.workspace.onDidChangeConfiguration(async (event) => {
-  context.subscriptions.push(vscode.workspace.onDidChangeConfiguration(async (event) => {
+  disposable = vscode.workspace.onDidChangeConfiguration(async (event) => {
+    // context.subscriptions.push(vscode.workspace.onDidChangeConfiguration(async (event) => {
 
     if (event.affectsConfiguration('command aliases') || event.affectsConfiguration('commandAlias')) {
 
       let category = settingsJS.getCategorySetting();
-      await loadCommands(context, category);  // reload commands with their aliases
-
-      vscode.window
-        .showInformationMessage("You must reload vscode to see the changes you made to the 'command aliases' setting.",
-          ...['Reload vscode', 'Do not Reload'])   // two buttons
-        .then(selected => {
-          if (selected === 'Reload vscode') vscode.commands.executeCommand('workbench.action.reloadWindow');
-          else vscode.commands.executeCommand('leaveEditorMessage');
-        });
+      const rewrote = await loadCommands(context, category);  // reload commands with their aliases
+      if (rewrote) notifyReloadNeeded();
     }
-  }));
+  });
 
-  // get rid of these *** TODO
   context.subscriptions.push(disposable);
-  disposables.push(disposable);
 
   disposable = vscode.commands.registerCommand('command-alias.createAliases', async function () {
 
@@ -54,10 +49,12 @@ async function activate(context) {
       // !commands is undefined if QP closed by 'Escape` or focus out, if click 'OK' but no selections QP returns an empty array
       if (!commands || !commands.length) return;  // user closed or no selection(s)
 
+      /** @type {vscode.InputBoxOptions} */
       let inputBoxOptions = {
         ignoreFocusOut: true
       };
 
+      /** @type {Object.<string, string|undefined>} */
       let newCommands = {};
 
       for (const command of commands) {
@@ -77,46 +74,70 @@ async function activate(context) {
   });
 
   context.subscriptions.push(disposable);
-  disposables.push(disposable);
 }
 
 
 /**
- * @description - load this extension's settings, make commands and activation events from them
- * @description - if different than existing package.json, write the new commands/events to package.json
- * @description - and vscode.commands.registerCommands() all commands whether new or old
+ * Tell the user their 'command aliases' change won't show up in the Command Palette
+ * until vscode reloads - contributes.commands is only read at window startup.
+ */
+function notifyReloadNeeded() {
+  vscode.window
+    .showInformationMessage("You must reload vscode to see the changes you made to the 'command aliases' setting.",
+      ...['Reload vscode', 'Do not Reload'])   // two buttons
+    .then(selected => {
+      if (selected === 'Reload vscode') vscode.commands.executeCommand('workbench.action.reloadWindow');
+      else vscode.commands.executeCommand('leaveEditorMessage');
+    });
+}
+
+
+/**
+ * Load this extension's settings, make commands and activation events from them.
+ * If different than existing package.json, write the new commands/events to package.json
+ *  and vscode.commands.registerCommands() all commands whether new or old
  *
  * @param {*} context - the extension.context
  * @param {String} category - like 'Alias', the default, in 'Alias:mkdir' in the command palette
+ * @returns {Promise<boolean>} - true if package.json was rewritten (a reload is needed to see the changes)
  */
 async function loadCommands(context, category) {
 
-  let thisExtension = vscode.extensions.getExtension('ArturoDent.command-alias');
   let disposable;
 
-  let packageCommands;
+  // fresh read from disk on every call - never Extension.packageJSON, which vscode enriches
+  // with runtime-only fields (id, identifier, isBuiltin, extensionLocation, etc.) that must
+  // never be persisted into the real manifest. Nothing here is cached, so there's no need to
+  // separately sync an in-memory copy after writing below.
+  const rawPackageJSON = await packageJSON.getPackageJSON();
+  const packageCommands = rawPackageJSON.contributes.commands;
+
   let settingsPackageCommands;
-  let packageEvents;
-  let settingsEvents;
+  // let settingsEvents;
+  let rewrote = false;
 
   const currentSettings = settingsJS.getCurrentSettings();
 
   if (currentSettings) {
 
-    packageCommands = packageJSON.getPackageJSONCommands();
     settingsPackageCommands = settingsJS.makePackageCommandsFromSettings(currentSettings, category);
 
-    packageEvents = thisExtension.packageJSON.activationEvents;
-    settingsEvents = settingsJS.makeSettingsEventsFromSettingsPackageCommands(settingsPackageCommands);
+    // TODO: necessary?
+    // settingsEvents = settings)JS.makeSettingsEventsFromSettingsPackageCommands(settingsPackageCommands);
 
+    // eliminate activationEventArraysAreEquivalent() reference
+    // if (!commandArraysAreEquivalent(settingsPackageCommands, packageCommands) ||
+    //   !activationEventArraysAreEquivalent(settingsEvents, packageEvents)) {
 
-    if (!commandArraysAreEquivalent(settingsPackageCommands, packageCommands) ||
-      !activationEventArraysAreEquivalent(settingsEvents, packageEvents)) {
+    if (!commandArraysAreEquivalent(settingsPackageCommands, packageCommands)) {
 
-      thisExtension.packageJSON.contributes.commands = settingsPackageCommands;
-      thisExtension.packageJSON.activationEvents = settingsEvents;
+      // TODO: is it necessary to do this anymore??
+      // rawPackageJSON.activationEvents = settingsEvents;
 
-      fs.writeFileSync(path.join(context.extensionPath, 'package.json'), JSON.stringify(thisExtension.packageJSON, null, 1));
+      rawPackageJSON.contributes.commands = settingsPackageCommands;
+      const packageJSONPath = path.join(context.extensionPath, 'package.json');
+      fs.writeFileSync(packageJSONPath, JSON.stringify(rawPackageJSON, null, 2));
+      rewrote = true;
     }
   }
 
@@ -160,17 +181,18 @@ async function loadCommands(context, category) {
         vscode.commands.executeCommand(run, args);
       });
       context.subscriptions.push(disposable);
-      disposables.push(disposable);
     }
   };
+
+  return rewrote;
 }
 
 
 /**
- * @description - are the settings and package.json commands the same?
+ * Are the settings and package.json commands the same?
  *
- * @param {Array} settings - commands constructed from the settings.json 'command aliases'
- * @param {Array} packages - the pre-existing commands from package.json
+ * @param {Array<*>} settings - commands constructed from the settings.json 'command aliases'
+ * @param {Array<*>} packages - the pre-existing commands from package.json
  * @returns {boolean}
  */
 function commandArraysAreEquivalent(settings, packages) {
@@ -179,38 +201,37 @@ function commandArraysAreEquivalent(settings, packages) {
 
   return settings.every(setting => packages.some(pcommand => {
 
-    // add 'args' and 'run'
-    if (pcommand.args)
-      return (pcommand.command === setting.command) && (pcommand.title === setting.title) &&
-        (pcommand.category === setting.category) && (pcommand.run === setting.run) && (Object.entries(pcommand.args).toString() === Object.entries(setting.args).toString());
-    else
-      return (pcommand.command === setting.command) && (pcommand.title === setting.title) &&
-        (pcommand.category === setting.category) && (pcommand.run === setting.run);
+    if (pcommand.enablement !== setting.enablement) return false;
+
+    if (pcommand.command !== setting.command || pcommand.title !== setting.title ||
+      pcommand.category !== setting.category || pcommand.run !== setting.run) return false;
+
+    return Object.entries(pcommand.args || {}).toString() === Object.entries(setting.args || {}).toString();
   }));
 }
 
 
 /**
- * @description - are the settings and package.json activationEvents the same?
+ * Are the settings and package.json activationEvents the same?
  *
- * @param {Array} settings - activationEvents constructed from the settings.json 'command aliases'
- * @param {Array} packages - the pre-existing activationEvents from package.json
+ * @param {Array<*>} settings - activationEvents constructed from the settings.json 'command aliases'
+ * @param {Array<*>} packages - the pre-existing activationEvents from package.json
  * @returns {boolean}
  */
-function activationEventArraysAreEquivalent(settings, packages) {
+// function activationEventArraysAreEquivalent(settings, packages) {
 
-  //   "onCommand:command-alias.editor.action.clipboardCutAction.1",
+//   //   "onCommand:command-alias.editor.action.clipboardCutAction.1",
 
-  if (settings.length !== packages.length) return false;
+//   if (settings.length !== packages.length) return false;
 
-  return settings.every(setting => packages.some(pevent => {
-    return (pevent === setting);
-  }));
-}
+//   return settings.every(setting => packages.some(pevent => {
+//     return (pevent === setting);
+//   }));
+// }
 
 
 /**
- * @description - open a QuickPick of all available commands
+ * Open a QuickPick of all available commands.
  * @returns - the QuickPick
  */
 function loadCommandQuickPick() {
@@ -225,7 +246,7 @@ function loadCommandQuickPick() {
 }
 
 /**
- * @description - add new items (with a <defaultAlias> if necessary) to user settings
+ * Add new items (with a <defaultAlias> if necessary) to user settings.
  *
  * @param {Object} newCommands - commands: aliases as selected in the QuickPick
  */
@@ -266,7 +287,7 @@ async function updateCommandAliasesSettings(newCommands) {
             if (selected === "Save Settings") {
 
               await vscode.commands.executeCommand('workbench.action.openSettingsJson');
-              await vscode.window.activeTextEditor.document.save();
+              if (vscode.window.activeTextEditor) await vscode.window.activeTextEditor.document.save();
               // try again
               updateCommandAliasesSettings(newCommands);
             }
@@ -285,6 +306,9 @@ async function updateCommandAliasesSettings(newCommands) {
   // }
 }
 
+/**
+ * @param {*} value
+ */
 function cleanAliasInput(value) {
 
   // strip leading and trailing whitespace/commas from complete list: "    A1, A2    "
@@ -294,7 +318,7 @@ function cleanAliasInput(value) {
   // this will also strip leading and trailing whitespace from each alias: " A1  ,   A3   "
   value = value.split(/\s*,\s*/);  // returns an array
 
-  value = value.filter((item) => item.length > 0); // for aliases that end up as empty strings: "A1,,,,A2"
+  value = value.filter((/** @type {string} */ item) => item.length > 0); // for aliases that end up as empty strings: "A1,,,,A2"
 
   value = value.length ? value : `<defaultAlias>`;  // if value is now an array with nothing in it, all filtered out
 
