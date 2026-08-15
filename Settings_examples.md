@@ -310,14 +310,14 @@ sibling alias with no `when`.
         "command": "jump-and-select.jumpBackwardSelect",
         "args": {
           "text": "(",
-          "putCursorBackward": "afterCharacter"
+          "putCursorBackwardSelect": "afterCharacter"
         }
       },
       {
         "command": "jump-and-select.jumpForwardSelect",
         "args": {
           "text": ")",
-          "putCursorBackward": "beforeCharacter"
+          "putCursorForwardSelect": "beforeCharacter"
         }
       }
     ]

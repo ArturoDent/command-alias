@@ -15,3 +15,5 @@ if (a === 'some condition')
   return true
 else
   return false
+
+  Along the way I found the test run was failing for an unrelated reason: ELECTRON_RUN_AS_NODE=1 is set in this shell's environment, which makes the VS Code test binary launch as plain Node instead of the app (hence "bad option" on every CLI flag). I re-ran with that var cleared for the command; it's now running in the background since it exceeded the 5-minute foreground limit. I'll report back once it finishes.
