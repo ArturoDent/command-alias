@@ -1,8 +1,0 @@
-class ClassWithMethods {
-  method1() {
-    return "hello world";
-  }
-  method2() {
-    return "goodbye world";
-  }
-}
